@@ -9,7 +9,7 @@ import SwiftUI
 
 struct MissionView: View {
     var body: some View {
-        Text("메인뷰")
+        Text("메인뷰 르페메뉴")
     }
 }
 
