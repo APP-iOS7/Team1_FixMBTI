@@ -10,6 +10,8 @@ import SwiftData
 
 @main
 struct Fix_MBTIApp: App {
+    @AppStorage("isFirstLaunch") private var isFirstLaunch: Bool = true // 첫 실행인지 여부
+
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
             Mission.self,
@@ -25,7 +27,11 @@ struct Fix_MBTIApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            if isFirstLaunch {
+                MBTISelectionView() // 첫 실행일때 mbti선택 뷰
+            } else {
+                ContentView()
+            }
         }
         .modelContainer(sharedModelContainer)
     }
