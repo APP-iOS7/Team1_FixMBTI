@@ -14,7 +14,7 @@ final class Mission {
     var detailText: String = ""    // 미션 설명
     var timestamp: Date = Date()          // 미션 생성 날짜
     var randomTime: Date? = nil          // 랜덤 타임
-    var imageName: String? = ""     // 이미지 추가
+    var imageName: String? = ""    // 이미지 추가 + 대홍: String?을 Data?로 변경해야 하는 것 아닌가요?
     var category: String = ""
     
     init(title: String, detailText: String, timestamp: Date = Date(), randomTime: Date? = nil, imageName: String? = nil, category: String) {
@@ -68,4 +68,36 @@ var missions: [Mission] = [
     Mission(title: "내일 하루 계획 세우기", detailText: "내일 할 일을 아침에 미리 계획해보세요.", category: "J"),
     Mission(title: "한 주의 목표 설정하기", detailText: "일주일 동안의 목표를 구체적으로 정리해보세요.", category: "J"),
     Mission(title: "정해진 시간에 할 일 완료하기", detailText: "하나의 일을 정한 시간 안에 마무리해보세요.", category: "J")
+]
+
+var dummyPosts: [Mission] = [
+    Mission(title: "새로운 사람에게 먼저 인사하기",
+            detailText: "처음 보는 사람에게 먼저 인사하는 게 어색했지만, 생각보다 기분이 좋았어요!",
+            timestamp: Date(timeIntervalSinceNow: -86400), // 하루 전
+            imageName: "smile_photo",
+            category: "E"),
+    
+    Mission(title: "즉흥적인 약속 잡기",
+            detailText: "친구한테 갑자기 연락해서 만나자고 했는데, 정말 재밌었어요!",
+            timestamp: Date(timeIntervalSinceNow: -43200), // 반나절 전
+            imageName: "friend_meetup",
+            category: "E"),
+    
+    Mission(title: "한적한 곳에서 조용히 명상하기",
+            detailText: "아무 생각 없이 10분 정도 명상했는데, 마음이 정리되는 느낌이었어요.",
+            timestamp: Date(timeIntervalSinceNow: -72000), // 20시간 전
+            imageName: nil,
+            category: "I"),
+    
+    Mission(title: "즉흥적으로 여행 계획 세우기",
+            detailText: "급하게 여행 계획을 세우고 떠나봤는데, 예상보다 즐거운 경험이었어요!",
+            timestamp: Date(timeIntervalSinceNow: -172800), // 이틀 전
+            imageName: "travel_plan",
+            category: "P"),
+    
+    Mission(title: "계획 없이 친구랑 만남 가지기",
+            detailText: "약속 없이 친구를 만나러 가니 새로운 경험이 되었어요!",
+            timestamp: Date(timeIntervalSinceNow: -36000), // 10시간 전
+            imageName: "random_meetup",
+            category: "P"),
 ]
