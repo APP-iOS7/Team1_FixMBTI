@@ -10,9 +10,8 @@ import SwiftData
 
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
-    @Query private var items: [Mission]
-    
-    @State private var selectedTab = 0  // 현재 선택된 탭을 추적하는 변수
+
+//    @Query private var items: [Item]
 
     var body: some View {
         TabView(selection: $selectedTab) {
@@ -42,3 +41,6 @@ struct ContentView: View {
     ContentView()
         .modelContainer(for: Mission.self, inMemory: true)
 }
+
+
+// 대홍 git push test
