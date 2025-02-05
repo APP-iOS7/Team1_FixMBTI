@@ -9,7 +9,8 @@ import SwiftUI
 
 struct SettingView: View {
     @State private var isShowingMBTISelection = false
-
+    @State private var isNotificationEnabled = true
+    
     var body: some View {
         NavigationStack {
             List {
@@ -17,11 +18,24 @@ struct SettingView: View {
                     isShowingMBTISelection = true
                 }
                 .foregroundColor(.primary)
-
+                
                 Button("MBTI 검사하러 가기") {
                     openMBTITest()
                 }
-                .foregroundColor(.blue)
+                .foregroundColor(.primary)
+
+                
+                HStack {
+                    Button("알림 설정") {
+                        isNotificationEnabled.toggle()
+                    }
+                    .foregroundColor(.primary)
+
+                    Spacer()
+                    Toggle("", isOn: $isNotificationEnabled)
+                        .labelsHidden()
+                }
+                
             }
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {

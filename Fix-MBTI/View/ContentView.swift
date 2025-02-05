@@ -10,25 +10,33 @@ import SwiftData
 
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
-    @Query private var missions: [Mission]
+    @State private var selectedTab = 0
+
+//    @Query private var items: [Item]
 
     var body: some View {
-        TabView {
+        TabView(selection: $selectedTab) {
             MissionView()
                 .tabItem {
-                    Image(systemName: "house")
+                    Image(selectedTab == 0 ? "HomeOn" : "HomeOff")
                 }
+                .tag(0)
+                
             ListView()
                 .tabItem {
-                    Image(systemName: "archivebox")
+                    Image(selectedTab == 1 ? "ListOn" : "ListOff")
                 }
+                .tag(1)
+                
             SettingView()
                 .tabItem {
-                    Image(systemName: "gear")
+                    Image(selectedTab == 2 ? "SettingOn" : "SettingOff")
                 }
+                .tag(2)
         }
     }
 }
+
 
 #Preview {
     ContentView()

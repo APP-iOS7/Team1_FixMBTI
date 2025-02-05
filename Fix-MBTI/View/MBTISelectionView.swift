@@ -29,7 +29,7 @@ struct MBTISelectionView: View {
                 
                 Image(systemName: "arrowshape.down.fill")
                     .resizable()
-                    .frame(width: 30, height: 30)
+                    .frame(width: 28, height: 30)
                 
                 MBTIPicker(selection: $targetMBTI, options: mbtiOptions)
                 
@@ -37,10 +37,10 @@ struct MBTISelectionView: View {
                     saveMBTI()
                     isFirstLaunch = false
                 }
-                
                 .padding()
-                .buttonStyle(.borderedProminent)
-                .disabled(currentMBTI == targetMBTI) // 현재, 목표 mbti같을때 완료버튼 비활성화
+                .foregroundStyle(currentMBTI == targetMBTI ? .gray : .orange)
+                .disabled(currentMBTI == targetMBTI)
+                .opacity(currentMBTI == targetMBTI ? 0.5 : 1.0)
             }
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -60,6 +60,34 @@ struct MBTISelectionView: View {
         
         let modelContext = try? ModelContainer(for: MBTIProfile.self).mainContext
         modelContext?.insert(profile)
+    }
+}
+
+
+struct MBTIPicker: View {
+    @Binding var selection: [String]
+    let options: [[String]]
+    
+    var body: some View {
+        HStack {
+            ForEach(0..<4, id: \.self) { index in
+                Picker("", selection: $selection[index]) {
+                    ForEach(options[index], id: \.self) { option in
+                        Text(option)
+                            .font(.system(size: 32))
+                            .fontWeight(.medium)
+                            .frame(maxWidth: .infinity)
+                            .foregroundStyle(selection[index] == option ? .orange : .gray)
+                        
+                    }
+                }
+                .pickerStyle(.wheel)
+                .frame(width: 60, height: 170)
+                .clipped()
+                
+            }
+        }
+        .padding()
     }
 }
 

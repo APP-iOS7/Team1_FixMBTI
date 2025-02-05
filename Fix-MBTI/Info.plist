@@ -3,7 +3,12 @@
 <plist version="1.0">
 <dict>
 	<key>NSUserNotificationUsageDescription</key>
+<<<<<<< HEAD
 	<string>앱에서 알림을 보내기 위해 권한이 필요합니다.</string>
+=======
+	<string>앱에서 알림을 보내기 위해 권한이 필요합니다.
+</string>
+>>>>>>> main
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>remote-notification</string>
