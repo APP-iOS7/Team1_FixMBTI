@@ -6,16 +6,28 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct SettingView: View {
+    @Query private var profiles: [MBTIProfile]
+    
     @State private var isShowingMBTISelection = false
     @State private var isNotificationEnabled = true
     
     @AppStorage("missionCount") private var missionCount: Int = 1 // 기본값 1개
     
+    
     var body: some View {
         NavigationStack {
             List {
+                Section(header: Text("나의 MBTI")) {
+                    Text(profiles.first?.currentMBTI ?? "미설정")
+                }
+                
+                Section(header: Text("체험 MBTI")) {
+                    Text(profiles.first?.targetMBTI ?? "미설정")
+                }
+                
                 Button("MBTI 변경") {
                     isShowingMBTISelection = true
                 }
@@ -26,7 +38,6 @@ struct SettingView: View {
                 }
                 .foregroundColor(.primary)
 
-                
                 HStack {
                     Button("알림 설정") {
                         isNotificationEnabled.toggle()
