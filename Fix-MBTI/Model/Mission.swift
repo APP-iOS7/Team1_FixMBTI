@@ -11,10 +11,10 @@ import SwiftData
 @Model
 final class Mission {
     var title: String = ""          // 미션 제목
-    var detailText: String = ""    // 미션 설명
+    var detailText: String = ""    // 게시글 내용
     var timestamp: Date = Date()          // 미션 생성 날짜
     var randomTime: Date? = nil          // 랜덤 타임
-    var imageName: String? = ""     // 이미지 추가
+    var imageName: String? = ""     // 이미지
     var category: String = ""
     
     init(title: String, detailText: String, timestamp: Date = Date(), randomTime: Date? = nil, imageName: String? = nil, category: String) {
