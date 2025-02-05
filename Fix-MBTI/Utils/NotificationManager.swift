@@ -31,7 +31,8 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
         content.body = "지금 앱을 열어 미션을 확인하세요."
         content.sound = .default
         
-        let randomDelay = Double.random(in: 1800...10800) // 30분 ~ 3시간 후
+        let randomDelay = Double.random(in: 1...10)
+//        let randomDelay = Double.random(in: 60...10800) // 30분 ~ 3시간 후
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: randomDelay, repeats: false)
         
         let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
