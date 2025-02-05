@@ -15,6 +15,7 @@ struct Fix_MBTIApp: App {
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
             Mission.self,
+            MBTIProfile.self,
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
         

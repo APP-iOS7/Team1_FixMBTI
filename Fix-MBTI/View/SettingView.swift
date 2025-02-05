@@ -69,6 +69,9 @@ struct SettingView: View {
                 }
                 
             }
+            .onAppear {
+                print("🔍 profiles (설정 화면): \(profiles.first?.currentMBTI ?? "default")")
+            }
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {
