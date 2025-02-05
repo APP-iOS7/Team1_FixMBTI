@@ -14,23 +14,22 @@ struct ContentView: View {
 //    @Query private var items: [Item]
 
     var body: some View {
-//        TabView(selection: $selectedTab) {
-        TabView() {
+        TabView(selection: $selectedTab) {
             MissionView()
                 .tabItem {
-//                    Image(selectedTab == 0 ? "HomeOn" : "HomeOff")
+                    Image(selectedTab == 0 ? "HomeOn" : "HomeOff")
                 }
                 .tag(0)
                 
             ListView()
                 .tabItem {
-//                    Image(selectedTab == 1 ? "ListOn" : "ListOff")
+                    Image(selectedTab == 1 ? "ListOn" : "ListOff")
                 }
                 .tag(1)
                 
             SettingView()
                 .tabItem {
-//                    Image(selectedTab == 2 ? "SettingOn" : "SettingOff")
+                    Image(selectedTab == 2 ? "SettingOn" : "SettingOff")
                 }
                 .tag(2)
         }
