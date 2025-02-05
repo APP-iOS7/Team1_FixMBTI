@@ -9,7 +9,18 @@ import SwiftUI
 
 struct MissionView: View {
     var body: some View {
-        Text("메인뷰")
+        NavigationStack {
+            List {
+                Text("dd")
+            }
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    Text("홈")
+                        .font(.headline)
+                }
+            }
+        }
     }
 }
 

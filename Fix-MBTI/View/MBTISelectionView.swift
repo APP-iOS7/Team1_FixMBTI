@@ -29,7 +29,7 @@ struct MBTISelectionView: View {
                 
                 Image(systemName: "arrowshape.down.fill")
                     .resizable()
-                    .frame(width: 30, height: 30)
+                    .frame(width: 28, height: 30)
                 
                 MBTIPicker(selection: $targetMBTI, options: mbtiOptions)
                 
@@ -37,10 +37,10 @@ struct MBTISelectionView: View {
                     saveMBTI()
                     isFirstLaunch = false
                 }
-                
                 .padding()
-                .buttonStyle(.borderedProminent)
-                .disabled(currentMBTI == targetMBTI) // 현재, 목표 mbti같을때 완료버튼 비활성화
+                .foregroundStyle(currentMBTI == targetMBTI ? .gray : .orange)
+                .disabled(currentMBTI == targetMBTI)
+                .opacity(currentMBTI == targetMBTI ? 0.5 : 1.0)
             }
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -63,9 +63,6 @@ struct MBTISelectionView: View {
     }
 }
 
-#Preview {
-    MBTISelectionView()
-}
 
 struct MBTIPicker: View {
     @Binding var selection: [String]
@@ -77,15 +74,23 @@ struct MBTIPicker: View {
                 Picker("", selection: $selection[index]) {
                     ForEach(options[index], id: \.self) { option in
                         Text(option)
-                            .font(.title)
+                            .font(.system(size: 32))
+                            .fontWeight(.medium)
                             .frame(maxWidth: .infinity)
+                            .foregroundStyle(selection[index] == option ? .orange : .gray)
+                        
                     }
                 }
                 .pickerStyle(.wheel)
-                .frame(width: 60, height: 150)
+                .frame(width: 60, height: 170)
                 .clipped()
+                
             }
         }
         .padding()
     }
+}
+
+#Preview {
+    MBTISelectionView()
 }
