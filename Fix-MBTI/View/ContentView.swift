@@ -10,21 +10,29 @@ import SwiftData
 
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
+    @Query private var items: [Mission]
+    
+    @State private var selectedTab = 0  // 현재 선택된 탭을 추적하는 변수
 
     var body: some View {
-        TabView {
+        TabView(selection: $selectedTab) {
             MissionView()
                 .tabItem {
-                    Image(systemName: "house")
+                    Image(selectedTab == 0 ? "HomeOn" : "HomeOff")
                 }
+                .tag(0)
+                
             ListView()
                 .tabItem {
-                    Image(systemName: "archivebox")
+                    Image(selectedTab == 1 ? "ListOn" : "ListOff")
                 }
+                .tag(1)
+                
             SettingView()
                 .tabItem {
-                    Image(systemName: "gear")
+                    Image(selectedTab == 2 ? "SettingOn" : "SettingOff")
                 }
+                .tag(2)
         }
     }
 }
