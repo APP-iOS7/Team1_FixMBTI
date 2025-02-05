@@ -9,10 +9,11 @@ import SwiftUI
 import SwiftData
 
 struct MBTISelectionView: View {
+    @Environment(\.modelContext) private var modelContext
     @AppStorage("isFirstLaunch") private var isFirstLaunch: Bool = true
     
     @State private var currentMBTI = ["E", "N", "T", "P"]
-    @State private var targetMBTI = ["E", "N", "T", "P"]
+    @State private var targetMBTI = ["I", "S", "F", "J"]
     
     let mbtiOptions = [
         ["E", "I"], // 외향형 vs 내향형
@@ -24,7 +25,6 @@ struct MBTISelectionView: View {
     var body: some View {
         NavigationView {
             VStack {
-           
                 MBTIPicker(selection: $currentMBTI, options: mbtiOptions)
                 
                 Image(systemName: "arrowshape.down.fill")
@@ -37,7 +37,6 @@ struct MBTISelectionView: View {
                     saveMBTI()
                     isFirstLaunch = false
                 }
-                
                 .padding()
                 .buttonStyle(.borderedProminent)
                 .disabled(currentMBTI == targetMBTI) // 현재, 목표 mbti같을때 완료버튼 비활성화
@@ -58,13 +57,10 @@ struct MBTISelectionView: View {
         
         let profile = MBTIProfile(currentMBTI: current, targetMBTI: target)
         
-        let modelContext = try? ModelContainer(for: MBTIProfile.self).mainContext
-        modelContext?.insert(profile)
+        modelContext.insert(profile)
+        
+        print("🎯 MBTI 저장 완료: 현재 MBTI \(current), 목표 MBTI \(target)")
     }
-}
-
-#Preview {
-    MBTISelectionView()
 }
 
 struct MBTIPicker: View {
@@ -88,4 +84,9 @@ struct MBTIPicker: View {
         }
         .padding()
     }
+}
+
+
+#Preview {
+    MBTISelectionView()
 }

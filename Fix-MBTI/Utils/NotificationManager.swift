@@ -12,7 +12,7 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
     static let instance = NotificationManager()
     
     // 1. 알림 권한 요청
-    func RequestPermission() {
+    func requestPermission() {
         let center = UNUserNotificationCenter.current()
         center.delegate = self
         center.requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in

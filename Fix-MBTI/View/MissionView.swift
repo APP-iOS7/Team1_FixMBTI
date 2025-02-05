@@ -38,6 +38,25 @@ struct MissionView: View {
         }
     }
     
+    
+    func addMission() {
+        
+        let newMission = Mission(title: "즉흥적인 약속 잡기", detailText: "계획 없이 친구에게 연락해서 만나기", category: "P")
+        modelContext.insert(newMission)
+    }
+    
+    func deleteMission(offsets: IndexSet) {
+        for index in offsets {
+            modelContext.delete(missions[index])
+        }
+    }
+    
+    
+    
+    
+    
+    
+    
     // ✅ 테스트용 알림 즉시 보내기
     private func sendTestNotification() {
         let content = UNMutableNotificationContent()
@@ -50,17 +69,6 @@ struct MissionView: View {
         
         UNUserNotificationCenter.current().add(request)
         print("📢 테스트 알림 예약 완료 (5초 후 도착)")
-    }
-    
-    func addMission() {
-        let newMission = Mission(title: "즉흥적인 약속 잡기", detailText: "계획 없이 친구에게 연락해서 만나기", category: "P")
-        modelContext.insert(newMission)
-    }
-    
-    func deleteMission(offsets: IndexSet) {
-        for index in offsets {
-            modelContext.delete(missions[index])
-        }
     }
     
 }

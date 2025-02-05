@@ -10,7 +10,7 @@ import SwiftData
 
 @main
 struct Fix_MBTIApp: App {
-    @AppStorage("isFirstLaunch") private var isFirstLaunch: Bool = false // 첫 실행인지 여부
+    @AppStorage("isFirstLaunch") private var isFirstLaunch: Bool = true // 첫 실행인지 여부
     
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
@@ -26,7 +26,7 @@ struct Fix_MBTIApp: App {
     }()
     
     init() {
-        NotificationManager.instance.RequestPermission() // 앱 실행 시 알림 권한 요청
+        NotificationManager.instance.requestPermission() // 앱 실행 시 알림 권한 요청
         NotificationManager.instance.scheduleMissionNotification() // 랜덤 알림 예약
     }
     
