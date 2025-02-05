@@ -14,6 +14,7 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
     // 1. 알림 권한 요청
     func RequestPermission() {
         let center = UNUserNotificationCenter.current()
+        center.delegate = self
         center.requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
             if granted {
                 print("알림 권한 허용됨 ✅")
@@ -21,8 +22,6 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
                 print("알림 권한 거부됨 ❌")
             }
         }
-        // 앱 실행 중에도 알림을 받을 수 있도록 설정
-        center.delegate = self
     }
     
     // 2. 랜덤한 시간 뒤 미션 알림 예약
