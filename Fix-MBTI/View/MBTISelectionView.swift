@@ -63,7 +63,6 @@ struct MBTISelectionView: View {
     }
 }
 
-
 struct MBTIPicker: View {
     @Binding var selection: [String]
     let options: [[String]]
@@ -93,27 +92,4 @@ struct MBTIPicker: View {
 
 #Preview {
     MBTISelectionView()
-}
-
-struct MBTIPicker: View {
-    @Binding var selection: [String]
-    let options: [[String]]
-    
-    var body: some View {
-        HStack {
-            ForEach(0..<4, id: \.self) { index in
-                Picker("", selection: $selection[index]) {
-                    ForEach(options[index], id: \.self) { option in
-                        Text(option)
-                            .font(.title)
-                            .frame(maxWidth: .infinity)
-                    }
-                }
-                .pickerStyle(.wheel)
-                .frame(width: 60, height: 150)
-                .clipped()
-            }
-        }
-        .padding()
-    }
 }
