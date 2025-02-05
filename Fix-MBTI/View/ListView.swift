@@ -9,7 +9,18 @@ import SwiftUI
 
 struct ListView: View {
     var body: some View {
-        Text("게시물뷰")
+        NavigationStack {
+            List {
+                Text("dd")
+            }
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    Text("게시물")
+                        .font(.headline)
+                }
+            }
+        }
     }
 }
 
