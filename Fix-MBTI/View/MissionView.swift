@@ -30,8 +30,26 @@ struct MissionView: View {
                 Button(action: addMission) {
                     Label("미션 추가", systemImage: "plus")
                 }
+                
+                Button(action: sendTestNotification) {
+                    Label("알림 테스트", systemImage: "bell.fill")
+                }
             }
         }
+    }
+    
+    // ✅ 테스트용 알림 즉시 보내기
+    private func sendTestNotification() {
+        let content = UNMutableNotificationContent()
+        content.title = "테스트 알림"
+        content.body = "이것은 즉시 발송된 테스트 알림입니다."
+        content.sound = .default
+        
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false) // 5초 후 실행
+        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+        
+        UNUserNotificationCenter.current().add(request)
+        print("📢 테스트 알림 예약 완료 (5초 후 도착)")
     }
     
     func addMission() {
