@@ -11,7 +11,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		148042002D53297A005696A3 /* Exceptions for "Fix-MBTI" folder in "Fix-MBTI" target */ = {
+		1E636F292D532EA600CF53CB /* Exceptions for "Fix-MBTI" folder in "Fix-MBTI" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
@@ -24,7 +24,7 @@
 		1E08C1F12D5201820010F54C /* Fix-MBTI */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				148042002D53297A005696A3 /* Exceptions for "Fix-MBTI" folder in "Fix-MBTI" target */,
+				1E636F292D532EA600CF53CB /* Exceptions for "Fix-MBTI" folder in "Fix-MBTI" target */,
 			);
 			path = "Fix-MBTI";
 			sourceTree = "<group>";
