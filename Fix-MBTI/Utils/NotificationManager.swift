@@ -39,6 +39,8 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
         UNUserNotificationCenter.current().add(request)
         
         print("📢 랜덤 미션 알림 예약 완료: \(randomDelay)초 후 도착 예정")
+        
+        checkPendingNotifications()
     }
     
     // 3. 앱이 실행 중일 때 알림을 받을 수 있도록 설정
@@ -48,5 +50,15 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
         withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void
     ) {
         completionHandler([.banner, .sound, .badge])
+    }
+    
+    // 예약된 알림 확인
+    func checkPendingNotifications() {
+        UNUserNotificationCenter.current().getPendingNotificationRequests { requests in
+            print("📌 현재 예약된 알림 개수: \(requests.count)")
+            for request in requests {
+                print("📌 예약된 알림: \(request.identifier), 트리거: \(request.trigger.debugDescription)")
+            }
+        }
     }
 }

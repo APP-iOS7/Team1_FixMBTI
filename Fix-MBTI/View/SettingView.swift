@@ -12,6 +12,7 @@ struct SettingView: View {
     @State private var isNotificationEnabled = true
     
     
+    
     var body: some View {
         NavigationStack {
             List {
