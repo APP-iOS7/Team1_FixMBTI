@@ -11,10 +11,10 @@ import SwiftData
 @Model
 final class Mission {
     var title: String = ""          // 미션 제목
-    var detailText: String = ""    // 미션 설명
+    var detailText: String = ""    // 게시물 텍스트
     var timestamp: Date = Date()          // 미션 생성 날짜
     var randomTime: Date? = nil          // 랜덤 타임
-    var imageName: String? = ""     // 이미지 추가
+    var imageName: String? = ""     // 게시물 이미지 추가
     var category: String = ""
     
     init(title: String, detailText: String, timestamp: Date = Date(), randomTime: Date? = nil, imageName: String? = nil, category: String) {
@@ -27,7 +27,7 @@ final class Mission {
     }
 }
 
-// 더미 데이터
+// 미션용 더미 데이터
 var missions: [Mission] = [
     // 🔹 I(내향) → E(외향) 미션
     Mission(title: "새로운 사람에게 먼저 인사하기", detailText: "3명에게 먼저 대화를 시도하세요.", category: "E"),
