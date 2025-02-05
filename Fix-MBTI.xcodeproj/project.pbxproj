@@ -10,9 +10,22 @@
 		1E08C1EF2D5201820010F54C /* Fix-MBTI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Fix-MBTI.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		1E636F292D532EA600CF53CB /* Exceptions for "Fix-MBTI" folder in "Fix-MBTI" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 1E08C1EE2D5201820010F54C /* Fix-MBTI */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		1E08C1F12D5201820010F54C /* Fix-MBTI */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				1E636F292D532EA600CF53CB /* Exceptions for "Fix-MBTI" folder in "Fix-MBTI" target */,
+			);
 			path = "Fix-MBTI";
 			sourceTree = "<group>";
 		};
