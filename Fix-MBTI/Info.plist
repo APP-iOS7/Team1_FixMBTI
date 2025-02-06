@@ -2,8 +2,7 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>NSUserNotificationUsageDescription
-NSUserNotificationUsageDescription</key>
+	<key>NSUserNotificationUsageDescription</key>
 	<string>앱에서 알림을 보내기 위해 권한이 필요합니다.</string>
 	<key>UIBackgroundModes</key>
 	<array>
