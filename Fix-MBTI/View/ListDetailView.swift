@@ -57,6 +57,8 @@ struct ListDetailView: View {
             }
             .padding(.vertical)
         }
+        .navigationTitle("게시물 상세")
+        .navigationBarTitleDisplayMode(.inline)
     }
     
     private func deletePost() {

@@ -38,7 +38,9 @@ struct MBTISelectionView: View {
                 Image(systemName: "arrowshape.down.fill")
                     .resizable()
                     .frame(width: 28, height: 30)
-                    .foregroundColor(Color("FA812F"))
+                    .foregroundColor(Color(hex: "FA812F"))
+                
+                
                 
                 MBTIPicker(selection: $targetMBTI, options: mbtiOptions)
                 
@@ -48,7 +50,7 @@ struct MBTISelectionView: View {
                     dismiss()
                 }
                 .padding()
-                .foregroundStyle(isCompleteButtonDisabled ? .gray : Color("FA812F"))
+                .foregroundStyle(isCompleteButtonDisabled ? .gray : Color(hex: "FA812F"))
                 .disabled(isCompleteButtonDisabled)
                 .opacity(isCompleteButtonDisabled ? 0.5 : 1.0)
             }
@@ -103,7 +105,7 @@ struct MBTIPicker: View {
                             .font(.system(size: 32))
                             .fontWeight(.medium)
                             .frame(maxWidth: .infinity)
-                            .foregroundStyle(selection[index] == option ? Color("FA812F") : .gray)
+                            .foregroundStyle(selection[index] == option ? Color(hex: "FA812F") : .gray)
                     }
                 }
                 .pickerStyle(.wheel)
