@@ -15,26 +15,27 @@
 import SwiftUI
 import SwiftData
 
-struct ListDetailView: View {    @Environment(\.modelContext) private var modelContext
+struct ListDetailView: View {
+    @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
  
-    var mission: Mission
+    var seletedPost: Mission
     
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 15) {
-                Image(mission.imageName ?? "")
+                Image(systemName: seletedPost.imageName ?? "figure.run.treadmill.circle")
                     .resizable()
                     .scaledToFit()
                     .frame(maxWidth: .infinity, maxHeight: 300)
                     .clipShape(RoundedRectangle(cornerRadius: 15))
                 
-                Text(mission.title)
+                Text(seletedPost.title)
                     .font(.title)
                     .fontWeight(.bold)
                     .padding(.horizontal)
                 
-                Text("\(mission.timestamp)")
+                Text("\(seletedPost.timestamp)")
                     .font(.subheadline)
                     .foregroundColor(.gray)
                     .padding(.horizontal)
@@ -42,20 +43,33 @@ struct ListDetailView: View {    @Environment(\.modelContext) private var modelC
                 Divider()
                     .padding(.horizontal)
                 
-                Text(mission.detailText)
+                Text(seletedPost.detailText)
                     .font(.body)
                     .padding(.horizontal)
-                
                 Spacer()
+                HStack(alignment: .bottom) {
+                    Spacer()
+                    Button("Close") {
+                        dismiss()
+                    }
+                    Spacer()
+                    Button("Delete") {
+                        dismiss()
+                    }
+                    Spacer()
+                }
+                .buttonStyle(.bordered)
             }
             .padding(.vertical)
         }
-        .navigationTitle("게시물 상세")
-        .navigationBarTitleDisplayMode(.inline)
     }
 }
 
 #Preview {
-    ListDetailView(mission: Mission(title: "ㅇㅇㅇ", detailText: "ㅇㅇㅇ", imageName: "ListOn", category: "E")
-    )
+    ListDetailView(seletedPost: dummyPosts[2])
 }
+
+//        .navigationTitle("게시물 상세")
+//        .navigationBarTitleDisplayMode(.inline)
+
+
