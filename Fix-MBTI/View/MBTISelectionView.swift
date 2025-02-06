@@ -63,7 +63,6 @@ struct MBTISelectionView: View {
     }
 }
 
-
 struct MBTIPicker: View {
     @Binding var selection: [String]
     let options: [[String]]

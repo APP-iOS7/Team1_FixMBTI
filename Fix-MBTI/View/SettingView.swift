@@ -11,7 +11,6 @@ struct SettingView: View {
     @State private var isShowingMBTISelection = false
     @State private var isNotificationEnabled = true
     
-    
     var body: some View {
         NavigationStack {
             List {
@@ -50,7 +49,7 @@ struct SettingView: View {
             }
         }
     }
-    
+
     private func openMBTITest() {
         if let url = URL(string: "https://www.16personalities.com/ko") {
             UIApplication.shared.open(url)
