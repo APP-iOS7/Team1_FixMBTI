@@ -5,16 +5,23 @@
 //  Created by KimJunsoo on 2/4/25.
 //
 
+import Foundation
 import SwiftUI
 import SwiftData
 
 struct MissionDetailView: View {
-    var mission: Mission
+    @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
     
     @State private var selectedImage: UIImage? = nil
     @State private var isImagePickerPresented = false
     @State private var inputText: String = ""
+    
+    private let mission: Mission  // let으로 변경
+    
+    init(mission: Mission) {  // 명시적 생성자 추가
+        self.mission = mission
+    }
     
     var body: some View {
         VStack {
@@ -38,12 +45,13 @@ struct MissionDetailView: View {
             }
             .padding()
             .sheet(isPresented: $isImagePickerPresented) {
-//                ImagePicker(image: $selectedImage)
+                //                ImagePicker(image: $selectedImage)
             }
             HStack {
                 Text(mission.title)
                     .font(.title2)
                     .fontWeight(.bold)
+                    .lineLimit(2)
                     .padding(.leading)
                 
                 Spacer()
@@ -54,6 +62,14 @@ struct MissionDetailView: View {
                     .foregroundStyle(Color("FA812F"))
                     .padding(.trailing)
                 
+            }
+            
+            HStack {
+                Text(mission.detailText)
+                    .font(.caption)
+                    .lineLimit(1)
+                    .padding(.leading)
+                Spacer()
             }
             
             TextEditor(text: $inputText)
@@ -84,7 +100,6 @@ struct MissionDetailView: View {
                 .disabled(inputText.isEmpty)
                 .onTapGesture {
                     savePost()
-                    dismiss()
                 }
         }
         .padding()
@@ -93,7 +108,17 @@ struct MissionDetailView: View {
     }
     
     private func savePost() {
-        print("게시물 저장: \(inputText)")
+        let postMission = PostMission(mission: mission, content: inputText)
+        modelContext.insert(postMission)
+        modelContext.delete(mission)
+        
+        do {
+            print("게시물 저장: \(inputText)")
+            try modelContext.save()
+            dismiss()
+        } catch {
+            print("저장 중 오류 발생: \(error)")
+        }
     }
 }
 
