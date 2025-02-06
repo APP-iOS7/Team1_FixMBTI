@@ -11,24 +11,34 @@ import SwiftData
 struct ListDetailView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
- 
-    @Binding var selectedPost: Mission?
+    
+    let post: PostMission
     
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 15) {
-                Image(systemName: selectedPost?.imageName ?? "figure.run.treadmill.circle")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(maxWidth: .infinity, maxHeight: 300)
-                    .clipShape(RoundedRectangle(cornerRadius: 15))
+                // 이미지 로드 로직 추가
+                if let imageName = post.imageName,
+                   let uiImage = loadImage(fileName: imageName) {
+                    Image(uiImage: uiImage)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(maxWidth: .infinity, maxHeight: 300)
+                        .clipShape(RoundedRectangle(cornerRadius: 15))
+                } else {
+                    Image(systemName: "photo.fill")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(maxWidth: .infinity, maxHeight: 300)
+                        .clipShape(RoundedRectangle(cornerRadius: 15))
+                }
                 
-                Text(selectedPost!.title)
+                Text(post.title)
                     .font(.title)
                     .fontWeight(.bold)
                     .padding(.horizontal)
                 
-                Text("\(selectedPost!.timestamp)")
+                Text(post.timestamp.formatted(date: .numeric, time: .omitted))
                     .font(.subheadline)
                     .foregroundColor(.gray)
                     .padding(.horizontal)
@@ -36,15 +46,20 @@ struct ListDetailView: View {
                 Divider()
                     .padding(.horizontal)
                 
-                Text(selectedPost!.detailText)
+                Text(post.detailText)
                     .font(.body)
                     .padding(.horizontal)
+                
+                Text(post.content)
+                    .font(.body)
+                    .padding(.horizontal)
+                
                 Spacer()
+                
                 HStack(alignment: .bottom) {
                     Spacer()
                     Button("Close") {
                         dismiss()
-//                        ListView()
                     }
                     Spacer()
                     Button("Delete") {
@@ -62,17 +77,19 @@ struct ListDetailView: View {
     }
     
     private func deletePost() {
-        if let diary = selectedPost {
-            if let index = dummyPosts.firstIndex(of: diary) {
-                dummyPosts.remove(at: index)
-            }
-            selectedPost = nil
-        }
+        // 게시물 삭제 로직 추가
+        modelContext.delete(post)
     }
     
+    // 이미지 로드 함수
+    private func loadImage(fileName: String) -> UIImage? {
+        let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
+        if let imagePath = documentsDirectory?.appendingPathComponent(fileName) {
+            return UIImage(contentsOfFile: imagePath.path)
+        }
+        return nil
+    }
 }
 
 #Preview {
-    @Previewable @State var previewPost: Mission? = dummyPosts[2]
-    return ListDetailView(selectedPost: $previewPost)
 }

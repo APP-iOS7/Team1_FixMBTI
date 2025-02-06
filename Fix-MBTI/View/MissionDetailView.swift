@@ -45,7 +45,7 @@ struct MissionDetailView: View {
             }
             .padding()
             .sheet(isPresented: $isImagePickerPresented) {
-                                ImagePicker(image: $selectedImage)
+                ImagePicker(image: $selectedImage)
             }
             HStack {
                 Text(mission.title)
@@ -92,7 +92,7 @@ struct MissionDetailView: View {
             Text("완료")
                 .padding()
                 .frame(maxWidth: .infinity)
-                .background(inputText.isEmpty || selectedImage == nil ? Color.gray : Color(hex: "FA812F"))
+                .background(inputText.isEmpty ? Color.gray : Color(hex: "FA812F")) 
                 .foregroundColor(.white)
                 .cornerRadius(10)
                 .padding()
@@ -108,19 +108,39 @@ struct MissionDetailView: View {
     }
     
     private func savePost() {
-        let postMission = PostMission(mission: mission, content: inputText)
-        modelContext.insert(postMission)
-        modelContext.delete(mission)
+        var fileName: String? = nil
         
-        do {
-            print("게시물 저장: \(inputText)")
-            try modelContext.save()
-            dismiss()
-        } catch {
-            print("저장 중 오류 발생: \(error)")
+        // 이미지가 선택되었을 경우에만 이미지 저장
+        if let imageData = selectedImage?.jpegData(compressionQuality: 0.8) {
+            fileName = UUID().uuidString + ".jpg"
+            if let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
+                let fileURL = documentsDirectory.appendingPathComponent(fileName!)
+                try? imageData.write(to: fileURL)
+            }
         }
+        
+        // PostMission 생성 및 저장
+        let postMission = PostMission(
+            mission: mission,
+            content: inputText,
+            imageName: fileName
+        )
+        modelContext.insert(postMission)
+        
+        // 원본 ActiveMission 삭제
+        let activeMissions = try? modelContext.fetch(FetchDescriptor<ActiveMission>())
+        activeMissions?.forEach { activeMission in
+            if activeMission.title == mission.title {
+                modelContext.delete(activeMission)
+            }
+        }
+        try? modelContext.save()
+        
+        dismiss()
     }
 }
+
+
 
 #Preview {
     MissionDetailView(mission: Mission(title: "오늘하루 계획 짜봐", detailText: "sdsdsdsdsdsd", category: "E"))

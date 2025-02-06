@@ -27,9 +27,34 @@ struct MissionView: View {
                                                                                    detailText: activeMission.detailText,
                                                                                    category: activeMission.category))) {
                         HStack {
-                            Text("\(activeMission.title), \(activeMission.category)체험")
-                                .font(.headline)
-                                .foregroundStyle(Color(hex: "222222"))
+                            VStack(alignment: .leading) {
+                                Text("\(activeMission.title)")
+                                    .font(.headline)
+                                    .foregroundStyle(Color(hex: "222222"))
+                                
+                                HStack {
+                                    Text(activeMission.timestamp.formatted(
+                                        .dateTime
+                                            .year().month().day()
+                                            .hour().minute().second()
+                                            .locale(Locale(identifier: "ko_KR"))
+                                    ))
+                                    .font(.caption)
+                                    .foregroundStyle(Color(hex: "222222"))
+                                    
+                                    HStack {
+                                        Text(activeMission.category)
+                                            .font(.caption)
+                                            .fontWeight(.bold)
+                                            .foregroundStyle(Color(hex: "FA812F"))  // category만 오렌지색으로
+                                        Text("체험")
+                                            .font(.caption)
+                                            .fontWeight(.bold)
+                                            .foregroundStyle(Color(hex: "222222"))  // "체험"은 기존 색상 유지
+                                    }
+                                }
+                            }
+                            Spacer()
                         }
                         .padding(.bottom)
                         .padding(.top)

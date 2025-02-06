@@ -17,6 +17,7 @@ struct Fix_MBTIApp: App {
             Mission.self,
             MBTIProfile.self,
             ActiveMission.self,
+            PostMission.self,
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
         
