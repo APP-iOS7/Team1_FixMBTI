@@ -25,12 +25,17 @@ struct MissionView: View {
                 }
                 .onDelete(perform: deleteMission)
             }
-            .navigationTitle("나의 미션")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    Text("미션")
+                        .font(.headline)
+                }
+            }
             .toolbar {
                 Button(action: addMission) {
                     Label("미션 추가", systemImage: "plus")
                 }
-                
                 Button(action: sendTestNotification) {
                     Label("알림 테스트", systemImage: "bell.fill")
                 }
