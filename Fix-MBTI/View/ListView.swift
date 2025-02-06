@@ -8,63 +8,64 @@
 import SwiftUI
 import SwiftData
 
-struct Post: Identifiable {
-    let id = UUID()
-    let title: String
-    let thumbnail: String
-    let description: String
-}
-
 struct ListView: View {
     @Environment(\.modelContext) private var modelContext
-       @Query private var missions: [Mission]
     
-    let posts: [Post] = [
-        Post(title: "감동적인 영화 한편 보는거 어때", thumbnail: "sample1", description: ""),
-        Post(title: "오늘은 친구 없이 혼자 놀아봐", thumbnail: "sample2", description: ""),
-        Post(title: "계획없이 여행을 떠나보자", thumbnail: "sample3", description: "")
-    ]
+    @State var stackPath = NavigationPath()
     
     var body: some View {
-        NavigationStack {
-            List(posts) { post in
-                HStack {
-                    Image(post.thumbnail)
-                        .resizable()
-                        .scaledToFill()
-                        .frame(width: 85, height: 85)
-                        .background(Color.orange)
-                        .clipShape(RoundedRectangle(cornerRadius: 5))
-                    
-                    Spacer()
-                    VStack(alignment: .leading, spacing: 5) {
-                        Spacer()
-
-                        Text(post.title)
-                            .font(.headline)
-                            .foregroundColor(.primary)
-                        Spacer()
-                        Text("게시 날짜: 2024-02-05")
-                            .font(.subheadline)
-                            .foregroundColor(.gray)
-                        Spacer()
-
+        NavigationStack(path: $stackPath) {
+            List {
+                ForEach(dummyPosts) { posts in
+                    NavigationLink(value: posts) {
+                        ListCellView(post: posts)
                     }
-                    
-                    Spacer()
-                }
-                .padding(.vertical, 5)
-            }
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .principal) {
-                    Text("게시물")
-                        .font(.headline)
                 }
             }
+            .navigationTitle("MBTI Diary Post")
+            .toolbar { EditButton() }
         }
     }
 }
+
+struct ListCellView: View {
+    var post: Mission
+    
+    var body: some View {
+        ScrollView {
+            HStack {
+                Image(systemName: post.imageName ?? "figure.run.treadmill.circle")
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: 85, height: 85)
+                    .background(Color.orange)
+                    .clipShape(RoundedRectangle(cornerRadius: 5))
+                
+                Spacer()
+                VStack(alignment: .leading, spacing: 5) {
+                    Spacer()
+                    Text("\(post.timestamp.formatted(date: .numeric, time: .omitted))")
+                        .font(.subheadline)
+                        .foregroundColor(.gray)
+                    Spacer()
+                    
+                    Text(post.title)
+                        .font(.headline)
+                        .foregroundColor(.primary)
+                    Spacer()
+                    
+                    Text(post.detailText)
+                        .font(.footnote)
+                        .foregroundColor(.primary)
+                    Spacer()
+                }
+                Spacer()
+            }
+            .padding(.vertical, 5)
+        }
+    }
+}
+
 
 #Preview {
     ListView()
