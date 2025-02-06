@@ -34,7 +34,7 @@ struct ListCellView: View {
     var body: some View {
         ScrollView {
             HStack {
-                Image(systemName: post.imageName ?? "tray")
+                Image(systemName: post.imageName ?? "figure.run.treadmill.circle")
                     .resizable()
                     .scaledToFill()
                     .frame(width: 85, height: 85)
@@ -44,14 +44,19 @@ struct ListCellView: View {
                 Spacer()
                 VStack(alignment: .leading, spacing: 5) {
                     Spacer()
+                    Text("\(post.timestamp.formatted(date: .numeric, time: .omitted))")
+                        .font(.subheadline)
+                        .foregroundColor(.gray)
+                    Spacer()
                     
                     Text(post.title)
                         .font(.headline)
                         .foregroundColor(.primary)
                     Spacer()
-                    Text("\(post.timestamp)")
-                        .font(.subheadline)
-                        .foregroundColor(.gray)
+                    
+                    Text(post.detailText)
+                        .font(.footnote)
+                        .foregroundColor(.primary)
                     Spacer()
                 }
                 Spacer()
