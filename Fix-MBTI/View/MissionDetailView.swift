@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import PhotosUI
 
 struct MissionDetailView: View {
     var mission: Mission
@@ -57,7 +56,7 @@ struct MissionDetailView: View {
             }
             
             TextEditor(text: $inputText)
-                .font(.system(size: 18)) 
+                .font(.system(size: 18))
                 .overlay(alignment: .topLeading) {
                     Text("문구 입력..")
                         .font(.system(size: 18))
@@ -73,18 +72,19 @@ struct MissionDetailView: View {
             
             Spacer()
             
-            Button("저장") {
-                savePost()
-                dismiss()
-            }
-            .padding()
-            .frame(maxWidth: .infinity)
-            .background(inputText.isEmpty ? Color.gray : Color(hex: "FA812F"))
-            .foregroundColor(.white)
-            .cornerRadius(10)
-            .padding()
-            .offset(y: -20)
-            .disabled(inputText.isEmpty)
+            Text("완료")
+                .padding()
+                .frame(maxWidth: .infinity)
+                .background(inputText.isEmpty || selectedImage == nil ? Color.gray : Color(hex: "FA812F"))
+                .foregroundColor(.white)
+                .cornerRadius(10)
+                .padding()
+                .offset(y: -20)
+                .disabled(inputText.isEmpty)
+                .onTapGesture {
+                    savePost()
+                    dismiss()
+                }
         }
         .padding()
         .navigationTitle("게시물 작성")

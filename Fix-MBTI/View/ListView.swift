@@ -18,7 +18,7 @@ struct Post: Identifiable {
 
 struct ListView: View {
     @Environment(\.modelContext) private var modelContext
-       @Query private var missions: [Mission]
+    @Query private var missions: [Mission]
     
     let posts: [Post] = [
         Post(title: "감동적인 영화 한편 보는거 어때", thumbnail: "sample1", description: ""),
@@ -40,7 +40,7 @@ struct ListView: View {
                     Spacer()
                     VStack(alignment: .leading, spacing: 5) {
                         Spacer()
-
+                        
                         Text(post.title)
                             .font(.headline)
                             .foregroundColor(.primary)
@@ -49,7 +49,7 @@ struct ListView: View {
                             .font(.subheadline)
                             .foregroundColor(.gray)
                         Spacer()
-
+                        
                     }
                     
                     Spacer()

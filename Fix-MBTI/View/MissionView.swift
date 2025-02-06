@@ -8,23 +8,39 @@
 import SwiftUI
 import SwiftData
 
+
 struct MissionView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var missions: [Mission]
     @State private var showAlert = false
     
+    var missionsE: [Mission] = [
+        Mission(title: "모르는 사람과 인사해봐", detailText: "", category: "E"),
+        Mission(title: "친구 10명에게 연락해봐", detailText: "", category: "E")
+    ]
     var body: some View {
         NavigationStack {
             List {
-                ForEach(missions) { mission in
+                ForEach(missionsE) { mission in
                     NavigationLink(destination: MissionDetailView(mission: mission)) {
                         HStack {
                             Text(mission.title)
+                                .font(.headline)
+                                .foregroundStyle(Color(hex: "222222"))
                         }
+                        .padding(.bottom)
+                        .padding(.top)
+                        .cornerRadius(15)
+                        
                     }
+                    
+
                 }
                 .onDelete(perform: deleteMission)
+             //   .listRowBackground(Color(hex: "FAB12F"))
+
             }
+            .listRowSpacing(20)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {
@@ -36,11 +52,13 @@ struct MissionView: View {
                 Button(action: addMission) {
                     Label("미션 추가", systemImage: "plus")
                 }
+
                 Button(action: sendTestNotification) {
                     Label("알림 테스트", systemImage: "bell.fill")
                 }
             }
         }
+        .accentColor(Color(hex: "FA812F"))
     }
     
     // ✅ 테스트용 알림 즉시 보내기
