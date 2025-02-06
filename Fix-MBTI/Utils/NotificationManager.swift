@@ -13,10 +13,20 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
     
     static let instance = NotificationManager()
     
+    private var storedProfiles: [MBTIProfile] = []
+    private var storedMissions: [Mission] = []
+    private var storedModelContext: ModelContext?
+    
+    // ADDED: 초기화 시 delegate 설정
+    override init() {
+        super.init()
+        UNUserNotificationCenter.current().delegate = self
+    }
+    
     // 1. 알림 권한 요청
     func requestPermission() {
         let center = UNUserNotificationCenter.current()
-        center.delegate = self
+//        center.delegate = self
         center.requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
             if granted {
                 print("알림 권한 허용됨 ✅")
@@ -34,6 +44,11 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
     
     // 🔹 랜덤한 시간 후 미션 알림 예약
     func scheduleMissionNotification(profiles: [MBTIProfile], missions: [Mission], modelContext: ModelContext) {
+        
+        self.storedProfiles = profiles
+        self.storedMissions = missions
+        self.storedModelContext = modelContext
+        
         removeAllNotifications() // 기존 알림 삭제
         
         let missionCount = UserDefaults.standard.integer(forKey: "missionCount")
@@ -47,7 +62,8 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
             content.body = "지금 앱을 열어 미션을 확인하세요."
             content.sound = .default
             
-            let randomDelay = Double.random(in: 10...60) // 10초 ~ 1분 후 실행
+            let randomDelay = Double.random(in: 10...30)
+//            let randomDelay = Double.random(in: 1080...18000) 
             accumulatedDelay += randomDelay
             
             let trigger = UNTimeIntervalNotificationTrigger(timeInterval: accumulatedDelay, repeats: false)
@@ -56,30 +72,9 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
             
             print("📢 랜덤 미션 알림 예약 완료: \(randomDelay)초 후 도착 예정")
             
-            // ✅ 알림 예약과 함께 미션 추가 (필요한 값 전달)
-            DispatchQueue.main.asyncAfter(deadline: .now() + accumulatedDelay) {
-                self.addMissionFromNotification(profiles: profiles, missions: missions, modelContext: modelContext)
-            }
         }
         
         checkPendingNotifications()
-    }
-    
-    // 🔹 알림을 클릭했을 때 미션 추가
-    func addMissionFromNotification(profiles: [MBTIProfile], missions: [Mission], modelContext: ModelContext) {
-        guard let profile = profiles.first else { return }
-        
-        let targetCategories = [profile.currentMBTI.last?.description, profile.targetMBTI.last?.description].compactMap { $0 }
-        let availableMissions = missions.filter { targetCategories.contains(String($0.category)) }
-        
-        if let randomMission = availableMissions.randomElement() {
-            DispatchQueue.main.async {
-                // 여기만 수정: Mission 대신 ActiveMission 생성
-                let newActiveMission = ActiveMission(mission: randomMission)
-                modelContext.insert(newActiveMission)
-                print("🎯 알림을 통해 랜덤 미션 추가됨: \(randomMission.title)")
-            }
-        }
     }
     
     // 3. 앱이 실행 중일 때 알림을 받을 수 있도록 설정
@@ -99,6 +94,29 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
                 print("📌 예약된 알림: \(request.identifier), 트리거: \(request.trigger.debugDescription)")
             }
         }
+    }
+    
+    func userNotificationCenter(
+        _ center: UNUserNotificationCenter,
+        didReceive response: UNNotificationResponse,
+        withCompletionHandler completionHandler: @escaping () -> Void
+    ) {
+        guard let profile = storedProfiles.first,
+              let modelContext = storedModelContext else {
+            completionHandler()
+            return
+        }
+        
+        let targetCategories = [profile.currentMBTI.last?.description, profile.targetMBTI.last?.description].compactMap { $0 }
+        let availableMissions = storedMissions.filter { targetCategories.contains(String($0.category)) }
+        
+        if let randomMission = availableMissions.randomElement() {
+            let newActiveMission = ActiveMission(mission: randomMission)
+            modelContext.insert(newActiveMission)
+            print("🎯 알림 수신으로 미션 추가됨: \(randomMission.title)")
+        }
+        
+        completionHandler()
     }
     
 }

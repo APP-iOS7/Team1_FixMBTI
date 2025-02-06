@@ -16,6 +16,9 @@ struct MissionView: View {
     
     @State private var showAlert = false
     
+    // ADDED: NotificationDelegate 인스턴스 생성
+    private let notificationDelegate = NotificationDelegate()
+    
     var body: some View {
         NavigationStack {
             List {
@@ -29,6 +32,14 @@ struct MissionView: View {
                     }
                 }
                 .onDelete(perform: deleteMission)
+            }
+            .onAppear {
+                print("🔍 현재 MBTI: \(profiles.first?.currentMBTI ?? "default")")
+                print("🔍 목표 MBTI: \(profiles.first?.targetMBTI ?? "default")")
+                
+                // Delegate 설정 및 콜백 등록
+                notificationDelegate.addMissionCallback = addMission
+                UNUserNotificationCenter.current().delegate = notificationDelegate
             }
             .navigationTitle("나의 미션")
             .toolbar {
@@ -92,6 +103,23 @@ struct MissionView: View {
         print("📢 테스트 알림 예약 완료 (5초 후 도착)")
     }
     
+}
+
+class NotificationDelegate: NSObject, UNUserNotificationCenterDelegate {
+    var addMissionCallback: (() -> Void)?
+    
+    // 알림이 도착했을 때 호출되는 함수
+    func userNotificationCenter(
+        _ center: UNUserNotificationCenter,
+        willPresent notification: UNNotification,
+        withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void
+    ) {
+        // 알림이 도착하면 바로 미션 추가
+        addMissionCallback?()
+        
+        // 알림도 보여주기
+        completionHandler([.banner, .sound, .badge])
+    }
 }
 
 #Preview {
