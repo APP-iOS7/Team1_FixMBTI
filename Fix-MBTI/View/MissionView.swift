@@ -10,16 +10,21 @@ import SwiftData
 
 struct MissionView: View {
     @Environment(\.modelContext) private var modelContext
-    @Query private var missions: [Mission]
+    //    @Query private var missions: [Mission]
+    @Query private var profiles: [MBTIProfile]
+    @Query(sort: \ActiveMission.timestamp) private var activeMissions: [ActiveMission]
+    
     @State private var showAlert = false
     
     var body: some View {
         NavigationStack {
             List {
-                ForEach(missions) { mission in
-                    NavigationLink(destination: MissionDetailView(mission: mission)) {
+                ForEach(activeMissions) { activeMission in
+                    NavigationLink(destination: MissionDetailView(mission: Mission(title: activeMission.title,
+                                                                                   detailText: activeMission.detailText,
+                                                                                   category: activeMission.category))) {
                         HStack {
-                            Text(mission.title)
+                            Text("\(activeMission.title), \(activeMission.category)체험")
                         }
                     }
                 }
@@ -38,11 +43,33 @@ struct MissionView: View {
         }
     }
     
-    
-    func addMission() {
+    private func addMission() {
+        guard let profile = profiles.first else { return }
         
-        let newMission = Mission(title: "즉흥적인 약속 잡기", detailText: "계획 없이 친구에게 연락해서 만나기", category: "P")
-        modelContext.insert(newMission)
+        let currentArray = Array(profile.currentMBTI)
+        let targetArray = Array(profile.targetMBTI)
+        var differentCategories: [String] = []
+        
+        for i in 0..<4 {
+            if currentArray[i] != targetArray[i] {
+                differentCategories.append(String(targetArray[i]))
+            }
+        }
+        
+        print("🎯 변화해야 할 카테고리들: \(differentCategories)")
+        
+        let availableMissions = missions.filter { mission in
+            differentCategories.contains(mission.category)
+        }
+        
+        if let randomMission = availableMissions.randomElement() {
+            // 중복 체크
+            if !activeMissions.contains(where: { $0.title == randomMission.title }) {
+                let newActiveMission = ActiveMission(mission: randomMission)
+                modelContext.insert(newActiveMission)
+                print("📝 새 미션 추가됨: \(randomMission.title) (카테고리: \(randomMission.category))")
+            }
+        }
     }
     
     func deleteMission(offsets: IndexSet) {
@@ -51,13 +78,7 @@ struct MissionView: View {
         }
     }
     
-    
-    
-    
-    
-    
-    
-    // ✅ 테스트용 알림 즉시 보내기
+    // 테스트용 알림 즉시 보내기
     private func sendTestNotification() {
         let content = UNMutableNotificationContent()
         content.title = "테스트 알림"
@@ -76,3 +97,4 @@ struct MissionView: View {
 #Preview {
     MissionView()
 }
+

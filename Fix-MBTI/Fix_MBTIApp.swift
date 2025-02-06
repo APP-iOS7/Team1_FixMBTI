@@ -16,6 +16,7 @@ struct Fix_MBTIApp: App {
         let schema = Schema([
             Mission.self,
             MBTIProfile.self,
+            ActiveMission.self,
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
         
@@ -28,7 +29,6 @@ struct Fix_MBTIApp: App {
     
     init() {
         NotificationManager.instance.requestPermission() // 앱 실행 시 알림 권한 요청
-        NotificationManager.instance.scheduleMissionNotification() // 랜덤 알림 예약
     }
     
     var body: some Scene {

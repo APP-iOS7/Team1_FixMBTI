@@ -12,44 +12,61 @@ struct MBTISelectionView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
     @AppStorage("isFirstLaunch") private var isFirstLaunch: Bool = true
-    
     @Query private var profiles: [MBTIProfile]
-    @State private var currentMBTI = ["E", "N", "T", "P"]
-    @State private var targetMBTI = ["I", "S", "F", "J"]
     
-    
-    let mbtiOptions = [
-        ["E", "I"], // 외향형 vs 내향형
-        ["N", "S"], // 직관형 vs 감각형
-        ["T", "F"], // 사고형 vs 감정형
-        ["P", "J"]  // 인식형 vs 판단형
+    // 전체 MBTI 타입 배열
+    let mbtiTypes = [
+        "ISTJ", "ISFJ", "INFJ", "INTJ",
+        "ISTP", "ISFP", "INFP", "INTP",
+        "ESTP", "ESFP", "ENFP", "ENTP",
+        "ESTJ", "ESFJ", "ENFJ", "ENTJ"
     ]
+    
+    @State private var selectedCurrentMBTI: String = ""
+    @State private var selectedTargetMBTI: String = ""
+    
+    // 완료 버튼 활성화 조건을 계산하는 프로퍼티
+    private var isCompleteButtonDisabled: Bool {
+        selectedCurrentMBTI.isEmpty ||
+        selectedTargetMBTI.isEmpty ||
+        selectedCurrentMBTI == selectedTargetMBTI
+    }
     
     var body: some View {
         NavigationView {
-            VStack {
-                MBTIPicker(selection: $currentMBTI, options: mbtiOptions)
+            VStack(spacing: 20) {
+                Text("현재 MBTI 선택")
+                    .font(.headline)
+                
+                Picker("현재 MBTI", selection: $selectedCurrentMBTI) {
+                    ForEach(mbtiTypes, id: \.self) { mbti in
+                        Text(mbti).tag(mbti)
+                    }
+                }
+                .pickerStyle(.wheel)
                 
                 Image(systemName: "arrowshape.down.fill")
                     .resizable()
                     .frame(width: 30, height: 30)
                 
-                MBTIPicker(selection: $targetMBTI, options: mbtiOptions)
+                Text("목표 MBTI 선택")
+                    .font(.headline)
+                
+                Picker("목표 MBTI", selection: $selectedTargetMBTI) {
+                    ForEach(mbtiTypes, id: \.self) { mbti in
+                        Text(mbti).tag(mbti)
+                    }
+                }
+                .pickerStyle(.wheel)
                 
                 Button("완료") {
                     saveMBTI()
                     isFirstLaunch = false
                     dismiss()
                 }
-                .padding()
                 .buttonStyle(.borderedProminent)
-                .disabled(currentMBTI == targetMBTI) // 현재, 목표 mbti같을때 완료버튼 비활성화
-            }
-            onAppear {
-                if let savedProfile = profiles.first {
-                    currentMBTI = Array(savedProfile.currentMBTI).map { String($0) }
-                    targetMBTI = Array(savedProfile.targetMBTI).map { String($0) }
-                }
+                .disabled(isCompleteButtonDisabled)
+                .padding()
             }
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -58,13 +75,13 @@ struct MBTISelectionView: View {
                         .font(.headline)
                 }
             }
+            .onAppear {
+                loadMBTI()
+            }
         }
     }
     
     private func saveMBTI() {
-        let current = currentMBTI.joined() // "ENTP" 형식으로 변환
-        let target = targetMBTI.joined()
-        
         // 기존 데이터 삭제
         do {
             let existingProfiles = try modelContext.fetch(FetchDescriptor<MBTIProfile>())
@@ -75,40 +92,19 @@ struct MBTISelectionView: View {
             print("❌ 기존 MBTI 데이터 삭제 실패: \(error)")
         }
         
-        let profile = MBTIProfile(currentMBTI: current, targetMBTI: target)
+        // 새 프로필 저장
+        let profile = MBTIProfile(currentMBTI: selectedCurrentMBTI,
+                                  targetMBTI: selectedTargetMBTI)
         modelContext.insert(profile)
-        print("🎯 MBTI 저장 완료: 현재 MBTI \(current), 목표 MBTI \(target)")
+        
+        print("✅ MBTI 저장 완료: 현재 MBTI \(selectedCurrentMBTI), 목표 MBTI \(selectedTargetMBTI)")
     }
     
     private func loadMBTI() {
         if let savedProfile = profiles.first {
-            currentMBTI = Array(savedProfile.currentMBTI).map { String($0) }
-            targetMBTI = Array(savedProfile.targetMBTI).map { String($0) }
+            selectedCurrentMBTI = savedProfile.currentMBTI
+            selectedTargetMBTI = savedProfile.targetMBTI
         }
-    }
-    
-}
-
-struct MBTIPicker: View {
-    @Binding var selection: [String]
-    let options: [[String]]
-    
-    var body: some View {
-        HStack {
-            ForEach(0..<4, id: \.self) { index in
-                Picker("", selection: $selection[index]) {
-                    ForEach(options[index], id: \.self) { option in
-                        Text(option)
-                            .font(.title)
-                            .frame(maxWidth: .infinity)
-                    }
-                }
-                .pickerStyle(.wheel)
-                .frame(width: 60, height: 150)
-                .clipped()
-            }
-        }
-        .padding()
     }
 }
 

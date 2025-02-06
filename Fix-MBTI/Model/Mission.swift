@@ -27,8 +27,23 @@ final class Mission {
     }
 }
 
-// 미션용 더미 데이터
-var missions: [Mission] = [
+@Model
+class ActiveMission {
+    var title: String
+    var detailText: String
+    var category: String
+    var timestamp: Date
+    
+    init(mission: Mission) {
+        self.title = mission.title
+        self.detailText = mission.detailText
+        self.category = mission.category
+        self.timestamp = Date()
+    }
+}
+
+// 미션용 데이터
+let missions: [Mission] = [
     // 🔹 I(내향) → E(외향) 미션
     Mission(title: "새로운 사람에게 먼저 인사하기", detailText: "3명에게 먼저 대화를 시도하세요.", category: "E"),
     Mission(title: "모임에서 의견 말하기", detailText: "모임이나 회의에서 최소 1번은 의견을 말해보세요.", category: "E"),

@@ -9,6 +9,8 @@ import SwiftUI
 import SwiftData
 
 struct SettingView: View {
+    @Environment(\.modelContext) private var modelContext
+    @Query private var missions: [Mission]
     @Query private var profiles: [MBTIProfile]
     
     @State private var isShowingMBTISelection = false
@@ -37,18 +39,22 @@ struct SettingView: View {
                     openMBTITest()
                 }
                 .foregroundColor(.primary)
-
+                
                 HStack {
                     Button("알림 설정") {
                         isNotificationEnabled.toggle()
                         if isNotificationEnabled {
-                            NotificationManager.instance.scheduleMissionNotification()
+                            NotificationManager.instance.scheduleMissionNotification(
+                                profiles: profiles,
+                                missions: missions,
+                                modelContext: modelContext
+                            )
                         } else {
                             NotificationManager.instance.removeAllNotifications()
                         }
                     }
                     .foregroundColor(.primary)
-
+                    
                     Spacer()
                     Toggle("", isOn: $isNotificationEnabled)
                         .labelsHidden()
@@ -62,7 +68,11 @@ struct SettingView: View {
                     }
                     .pickerStyle(SegmentedPickerStyle())
                     .onChange(of: missionCount) { oldValue, newValue in
-                        NotificationManager.instance.scheduleMissionNotification()
+                        NotificationManager.instance.scheduleMissionNotification(
+                            profiles: profiles,
+                            missions: missions,
+                            modelContext: modelContext
+                        )
                         print("🔄 미션 개수 변경됨: \(oldValue) 에서 \(newValue)")
                         
                     }
