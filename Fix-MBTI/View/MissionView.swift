@@ -20,22 +20,40 @@ struct MissionView: View {
                     NavigationLink(destination: MissionDetailView(mission: mission)) {
                         HStack {
                             Text(mission.title)
+                                .font(.headline)
+                                .foregroundStyle(Color(hex: "222222"))
                         }
+                        .padding(.bottom)
+                        .padding(.top)
+                        .cornerRadius(15)
+                        
                     }
+                    
+
                 }
                 .onDelete(perform: deleteMission)
+             //   .listRowBackground(Color(hex: "FAB12F"))
+
             }
-            .navigationTitle("나의 미션")
+            .listRowSpacing(20)
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    Text("미션")
+                        .font(.headline)
+                }
+            }
             .toolbar {
                 Button(action: addMission) {
                     Label("미션 추가", systemImage: "plus")
                 }
-                
+
                 Button(action: sendTestNotification) {
                     Label("알림 테스트", systemImage: "bell.fill")
                 }
             }
         }
+        .accentColor(Color(hex: "FA812F"))
     }
     
     // ✅ 테스트용 알림 즉시 보내기

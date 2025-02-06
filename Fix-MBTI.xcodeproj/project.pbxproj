@@ -11,9 +11,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-
 		1EEC27F02D5445DB00BEF435 /* Exceptions for "Fix-MBTI" folder in "Fix-MBTI" target */ = {
-
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
@@ -26,7 +24,6 @@
 		1E08C1F12D5201820010F54C /* Fix-MBTI */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-
 				1EEC27F02D5445DB00BEF435 /* Exceptions for "Fix-MBTI" folder in "Fix-MBTI" target */,
 			);
 			path = "Fix-MBTI";

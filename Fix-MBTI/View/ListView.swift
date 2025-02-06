@@ -32,37 +32,35 @@ struct ListCellView: View {
     var post: Mission
     
     var body: some View {
-        ScrollView {
+        NavigationStack {
             HStack {
-                Image(systemName: post.imageName ?? "figure.run.treadmill.circle")
+                Image(systemName: post.imageName ?? "")
                     .resizable()
                     .scaledToFill()
                     .frame(width: 85, height: 85)
-                    .background(Color.orange)
+                    .background(Color(hex: "FAB12F"))
                     .clipShape(RoundedRectangle(cornerRadius: 5))
+                    .padding(.top)
                 
-                Spacer()
-                VStack(alignment: .leading, spacing: 5) {
-                    Spacer()
-                    Text("\(post.timestamp.formatted(date: .numeric, time: .omitted))")
-                        .font(.subheadline)
-                        .foregroundColor(.gray)
-                    Spacer()
-                    
                     Text(post.title)
                         .font(.headline)
                         .foregroundColor(.primary)
-                    Spacer()
-                    
-                    Text(post.detailText)
-                        .font(.footnote)
-                        .foregroundColor(.primary)
-                    Spacer()
-                }
-                Spacer()
+                        .padding(.leading)
+                        .offset(x: -8, y: -10)
+                
+                  
             }
+            
             .padding(.vertical, 5)
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    Text("게시물")
+                        .font(.headline)
+                }
+            }
         }
+
     }
 }
 
