@@ -12,23 +12,23 @@ struct ListDetailView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
  
-    var mission: Mission
+    @Binding var selectedPost: Mission?
     
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 15) {
-                Image(mission.imageName ?? "")
+                Image(systemName: selectedPost?.imageName ?? "figure.run.treadmill.circle")
                     .resizable()
                     .scaledToFit()
                     .frame(maxWidth: .infinity, maxHeight: 300)
                     .clipShape(RoundedRectangle(cornerRadius: 15))
                 
-                Text(mission.title)
+                Text(selectedPost!.title)
                     .font(.title)
                     .fontWeight(.bold)
                     .padding(.horizontal)
                 
-                Text("\(mission.timestamp)")
+                Text("\(selectedPost!.timestamp)")
                     .font(.subheadline)
                     .foregroundColor(.gray)
                     .padding(.horizontal)
@@ -36,20 +36,41 @@ struct ListDetailView: View {
                 Divider()
                     .padding(.horizontal)
                 
-                Text(mission.detailText)
+                Text(selectedPost!.detailText)
                     .font(.body)
                     .padding(.horizontal)
-                
                 Spacer()
+                HStack(alignment: .bottom) {
+                    Spacer()
+                    Button("Close") {
+                        dismiss()
+//                        ListView()
+                    }
+                    Spacer()
+                    Button("Delete") {
+                        deletePost()
+                        dismiss()
+                    }
+                    Spacer()
+                }
+                .buttonStyle(.bordered)
             }
             .padding(.vertical)
         }
-        .navigationTitle("게시물 상세")
-        .navigationBarTitleDisplayMode(.inline)
     }
+    
+    private func deletePost() {
+        if let diary = selectedPost {
+            if let index = dummyPosts.firstIndex(of: diary) {
+                dummyPosts.remove(at: index)
+            }
+            selectedPost = nil
+        }
+    }
+    
 }
 
 #Preview {
-    ListDetailView(mission: Mission(title: "ㅇㅇㅇ", detailText: "ㅇㅇㅇ", imageName: "ListOn", category: "E")
-    )
+    @Previewable @State var previewPost: Mission? = dummyPosts[2]
+    return ListDetailView(selectedPost: $previewPost)
 }
