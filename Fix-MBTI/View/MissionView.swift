@@ -74,7 +74,7 @@ struct MissionView: View {
     
     func deleteMission(offsets: IndexSet) {
         for index in offsets {
-            modelContext.delete(missions[index])
+            modelContext.delete(activeMissions[index])
         }
     }
     

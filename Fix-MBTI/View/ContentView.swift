@@ -20,19 +20,22 @@ struct ContentView: View {
         TabView(selection: $selectedTab) {
             MissionView()
                 .tabItem {
-                    Image(selectedTab == 0 ? "HomeOn" : "HomeOff")
+//                    Image(selectedTab == 0 ? "HomeOn" : "HomeOff")
+                    Text("Home")
                 }
                 .tag(0)
             
             ListView()
                 .tabItem {
-                    Image(selectedTab == 1 ? "ListOn" : "ListOff")
+//                    Image(selectedTab == 1 ? "ListOn" : "ListOff")
+                    Text("List")
                 }
                 .tag(1)
             
             SettingView()
                 .tabItem {
-                    Image(selectedTab == 2 ? "SettingOn" : "SettingOff")
+//                    Image(selectedTab == 2 ? "SettingOn" : "SettingOff")
+                    Text("Setting")
                 }
                 .tag(2)
         }
