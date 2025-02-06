@@ -36,16 +36,16 @@ struct MissionDetailView: View {
                     VStack {
                         Image(systemName: "photo.on.rectangle.angled")
                             .font(.system(size: 50))
-                            .foregroundColor(Color("FA812F"))
+                            .foregroundColor(Color(hex: "FA812F"))
                     }
                     .frame(width: 350, height: 350)
-                    .background(Color("F8F8F8"))
+                    .background(Color(hex: "F8F8F8"))
                     .clipShape(RoundedRectangle(cornerRadius: 10))
                 }
             }
             .padding()
             .sheet(isPresented: $isImagePickerPresented) {
-                //                ImagePicker(image: $selectedImage)
+                                ImagePicker(image: $selectedImage)
             }
             HStack {
                 Text(mission.title)
@@ -59,7 +59,7 @@ struct MissionDetailView: View {
                 Text(mission.category)
                     .font(.title)
                     .fontWeight(.bold)
-                    .foregroundStyle(Color("FA812F"))
+                    .foregroundStyle(Color(hex: "FA812F"))
                     .padding(.trailing)
                 
             }
@@ -92,7 +92,7 @@ struct MissionDetailView: View {
             Text("완료")
                 .padding()
                 .frame(maxWidth: .infinity)
-                .background(inputText.isEmpty || selectedImage == nil ? Color.gray : Color("FA812F"))
+                .background(inputText.isEmpty || selectedImage == nil ? Color.gray : Color(hex: "FA812F"))
                 .foregroundColor(.white)
                 .cornerRadius(10)
                 .padding()

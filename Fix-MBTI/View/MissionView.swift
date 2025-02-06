@@ -16,7 +16,7 @@ struct MissionView: View {
     
     @State private var showAlert = false
     
-    // ADDED: NotificationDelegate 인스턴스 생성
+    // NotificationDelegate 인스턴스 생성
     private let notificationDelegate = NotificationDelegate()
     
     var body: some View {
@@ -28,7 +28,12 @@ struct MissionView: View {
                                                                                    category: activeMission.category))) {
                         HStack {
                             Text("\(activeMission.title), \(activeMission.category)체험")
+                                .font(.headline)
+                                .foregroundStyle(Color(hex: "222222"))
                         }
+                        .padding(.bottom)
+                        .padding(.top)
+                        .cornerRadius(15)
                     }
                 }
                 .onDelete(perform: deleteMission)
@@ -41,7 +46,14 @@ struct MissionView: View {
                 notificationDelegate.addMissionCallback = addMission
                 UNUserNotificationCenter.current().delegate = notificationDelegate
             }
-            .navigationTitle("나의 미션")
+            .listRowSpacing(20)
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    Text("미션")
+                        .font(.headline)
+                }
+            }
             .toolbar {
                 Button(action: addMission) {
                     Label("미션 추가", systemImage: "plus")
@@ -52,6 +64,7 @@ struct MissionView: View {
                 }
             }
         }
+        .accentColor(Color(hex: "FA812F"))
     }
     
     private func addMission() {
