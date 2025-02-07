@@ -11,7 +11,8 @@ Fix-MBTI는 사용자는 MBTI 체험을 위해 본인과 반대의 성향 MBTI�
 
 ## 🛠️ 기술 스택
 - **언어**: Swift
-- **프레임워크**: Xcode, SwiftUI
+- **통합 개발 환경**: Xcode
+- **프레임워크**: SwiftUI
 - **데이터베이스**: SwiftData
 - **버전 관리**: Git, GitHub
 
