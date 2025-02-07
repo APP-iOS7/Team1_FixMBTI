@@ -45,9 +45,9 @@ Fix-MBTI/
 ## 🤝 팀원 소개
 | 역할  | 이름  | GitHub |
 |-------|------|--------|
-| 👨‍🎨 UI/UX 디자인 | 이수겸 | [@leesugyeom](https://github.com/leesugyeom) |
-| 👨‍💻 iOS 개발 | 김준수 | [@kimjunsu](https://github.com/kimjunsu) |
-| 👨‍💻 iOS 개발 | 김대홍 | [@kimdaehong](https://github.com/kimdaehong) |
+| 👨‍🎨 UI/UX 디자인 | 이수겸 | [@leesugyeom](https://github.com/olcrpo) |
+| 👨‍💻 iOS 개발 | 김준수 | [@kimjunsoo](https://github.com/Rrpe) |
+| 👨‍💻 iOS 개발 | 김대홍 | [@kimdaehong](https://github.com/aerohero) |
 
 ## 📖 필독
 현재 main branch 충돌로 최종 파일은 merge-f branch에 있습니다. 확인 후 실행 해주세요.
