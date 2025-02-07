@@ -8,6 +8,9 @@
 import SwiftUI
 import SwiftData
 
+import SwiftUI
+import SwiftData
+
 struct SettingView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var missions: [Mission]
@@ -15,35 +18,66 @@ struct SettingView: View {
     
     @State private var isShowingMBTISelection = false
     @State private var isNotificationEnabled = true
-    
     @AppStorage("missionCount") private var missionCount: Int = 1 // 기본값 1개
-    
     
     var body: some View {
         NavigationStack {
             List {
-                Section(header: Text("나의 MBTI")) {
-                    Text(profiles.first?.currentMBTI ?? "미설정")
+                
+                Section(header: Text("내 MBTI").font(.caption).foregroundColor(Color(hex: "444444"))) {
+                    HStack {
+                        Text(profiles.first?.currentMBTI ?? "미설정")
+                            .font(.headline)
+                        Spacer()
+                    }
                 }
                 
-                Section(header: Text("체험 MBTI")) {
-                    Text(profiles.first?.targetMBTI ?? "미설정")
+                Section(header: Text("체험 MBTI").font(.caption).foregroundColor(Color(hex: "444444"))) {
+                    HStack {
+                        Text(profiles.first?.targetMBTI ?? "미설정")
+                            .font(.headline)
+                        
+                        Spacer()
+                    }
                 }
                 
-                Button("MBTI 변경") {
-                    isShowingMBTISelection = true
+                Section {
+                    Button(action: { isShowingMBTISelection = true }) {
+                        HStack {
+                            Image(systemName: "pencil")
+                                .foregroundColor(Color(hex: "FA812F"))
+                            Text("MBTI 변경")
+                                .foregroundColor(.primary)
+                            Spacer()
+                            Image(systemName: "chevron.right")
+                                .foregroundColor(.gray)
+                        }
+                    }
+                    
+                    Button(action: { openMBTITest() }) {
+                        HStack {
+                            Image(systemName: "globe")
+                                .foregroundColor(Color(hex: "FA812F"))
+                            Text("MBTI 검사하러 가기")
+                                .foregroundColor(.primary)
+                            Spacer()
+                            Image(systemName: "chevron.right")
+                                .foregroundColor(.gray)
+                        }
+                    }
                 }
-                .foregroundColor(.primary)
                 
-                Button("MBTI 검사하러 가기") {
-                    openMBTITest()
-                }
-                .foregroundColor(.primary)
-                
-                HStack {
-                    Button("알림 설정") {
-                        isNotificationEnabled.toggle()
-                        if isNotificationEnabled {
+                // 알림 설정 섹션
+                Section {
+                    Toggle(isOn: $isNotificationEnabled) {
+                        HStack {
+                            Image(systemName: "bell.fill")
+                                .foregroundColor(Color(hex: "FA812F"))
+                            Text("알림 설정")
+                        }
+                    }
+                    .onChange(of: isNotificationEnabled) { _, newValue in
+                        if newValue {
                             NotificationManager.instance.scheduleMissionNotification(
                                 profiles: profiles,
                                 missions: missions,
@@ -53,19 +87,16 @@ struct SettingView: View {
                             NotificationManager.instance.removeAllNotifications()
                         }
                     }
-                    .foregroundColor(.primary)
-                    
-                    Spacer()
-                    Toggle("", isOn: $isNotificationEnabled)
-                        .labelsHidden()
                 }
                 
-                Section(header: Text("미션 개수 설정")) {
+                // 🔹 미션 개수 설정
+                Section(header: Text("미션 개수 설정").font(.caption).foregroundColor(Color(hex: "444444"))) {
                     Picker("미션 개수", selection: $missionCount) {
                         ForEach(1...5, id: \.self) { count in
                             Text("\(count)개").tag(count)
                         }
                     }
+                    .padding(5)
                     .pickerStyle(SegmentedPickerStyle())
                     .onChange(of: missionCount) { oldValue, newValue in
                         NotificationManager.instance.scheduleMissionNotification(
@@ -73,26 +104,19 @@ struct SettingView: View {
                             missions: missions,
                             modelContext: modelContext
                         )
-                        print("🔄 미션 개수 변경됨: \(oldValue) 에서 \(newValue)")
-                        
+                        print("🔄 미션 개수 변경됨: \(oldValue) → \(newValue)")
                     }
                 }
-                
             }
-            .onAppear {
-                print("🔍 profiles (설정 화면): \(profiles.first?.currentMBTI ?? "default")")
-            }
+            .padding(.top, 10)
+            .navigationTitle("환경 설정")
             .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .principal) {
-                    Text("환경설정")
-                        .font(.headline)
-                }
-            }
             .sheet(isPresented: $isShowingMBTISelection) {
                 MBTISelectionView()
             }
         }
+        
+        .listStyle(.grouped)
     }
     
     private func openMBTITest() {
