@@ -8,39 +8,71 @@
 import SwiftUI
 import SwiftData
 
-
 struct MissionView: View {
     @Environment(\.modelContext) private var modelContext
-    @Query private var missions: [Mission]
+    //    @Query private var missions: [Mission]
+    @Query private var profiles: [MBTIProfile]
+    @Query(sort: \ActiveMission.timestamp) private var activeMissions: [ActiveMission]
     @State private var showAlert = false
+    @State var categories = ["전체보기", "E", "I", "N", "S", "T", "F", "P", "J"]
+    @State var category = "전체보기"
+    private var filteredMissions: [ActiveMission] {
+        category == "전체보기" ? activeMissions : activeMissions.filter { $0.category == category }
+    }
+    private var categoryPicker: some View {
+        HStack {
+            Spacer()
+            Picker("Category", selection: $category) {
+                ForEach(categories, id: \.self) {
+                    Text($0)
+                        .font(.caption2)
+                        .fontWeight(.semibold)
+                }
+            }
+            .frame(width: 160, height: 30, alignment: .trailing)
+            .cornerRadius(10)
+        }
+    }
     
-    var missionsE: [Mission] = [
-        Mission(title: "모르는 사람과 인사해봐", detailText: "", category: "E"),
-        Mission(title: "친구 10명에게 연락해봐", detailText: "", category: "E")
-    ]
+    // NotificationDelegate 인스턴스 생성
+    private let notificationDelegate = NotificationDelegate()
+    
     var body: some View {
         NavigationStack {
-            List {
-                ForEach(missionsE) { mission in
-                    NavigationLink(destination: MissionDetailView(mission: mission)) {
-                        HStack {
-                            Text(mission.title)
-                                .font(.headline)
-                                .foregroundStyle(Color(hex: "222222"))
+            VStack {
+                categoryPicker
+                    .offset(y: 4)
+                if filteredMissions.isEmpty {
+                    ContentUnavailableView("미션 없음", systemImage: "doc.text")
+                } else {
+                    List {
+                        ForEach(filteredMissions) { activeMission in
+                            NavigationLink(destination:
+                                            MissionDetailView(mission: Mission(
+                                                title: activeMission.title,
+                                                detailText: activeMission.detailText,
+                                                category: activeMission.category))) {
+                                MissionCellView(mission: activeMission)
+                                    .padding(.bottom)
+                                    .padding(.top)
+                                    .cornerRadius(15)
+                            }
                         }
-                        .padding(.bottom)
-                        .padding(.top)
-                        .cornerRadius(15)
+                        .onDelete(perform: deleteMission)
+                    }
+                    .onAppear {
+                        print("🔍 현재 MBTI: \(profiles.first?.currentMBTI ?? "default")")
+                        print("🔍 목표 MBTI: \(profiles.first?.targetMBTI ?? "default")")
+                        
+                        // Delegate 설정 및 콜백 등록
+                        notificationDelegate.addMissionCallback = addMission
+                        UNUserNotificationCenter.current().delegate = notificationDelegate
                         
                     }
+                    .listRowSpacing(20)
                     
-
                 }
-                .onDelete(perform: deleteMission)
-             //   .listRowBackground(Color(hex: "FAB12F"))
-
             }
-            .listRowSpacing(20)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {
@@ -52,7 +84,7 @@ struct MissionView: View {
                 Button(action: addMission) {
                     Label("미션 추가", systemImage: "plus")
                 }
-
+                
                 Button(action: sendTestNotification) {
                     Label("알림 테스트", systemImage: "bell.fill")
                 }
@@ -61,7 +93,42 @@ struct MissionView: View {
         .accentColor(Color(hex: "FA812F"))
     }
     
-    // ✅ 테스트용 알림 즉시 보내기
+    private func addMission() {
+        guard let profile = profiles.first else { return }
+        
+        let currentArray = Array(profile.currentMBTI)
+        let targetArray = Array(profile.targetMBTI)
+        var differentCategories: [String] = []
+        
+        for i in 0..<4 {
+            if currentArray[i] != targetArray[i] {
+                differentCategories.append(String(targetArray[i]))
+            }
+        }
+        
+        print("🎯 변화해야 할 카테고리들: \(differentCategories)")
+        
+        let availableMissions = missions.filter { mission in
+            differentCategories.contains(mission.category)
+        }
+        
+        if let randomMission = availableMissions.randomElement() {
+            // 중복 체크
+            if !activeMissions.contains(where: { $0.title == randomMission.title }) {
+                let newActiveMission = ActiveMission(mission: randomMission)
+                modelContext.insert(newActiveMission)
+                print("📝 새 미션 추가됨: \(randomMission.title) (카테고리: \(randomMission.category))")
+            }
+        }
+    }
+    
+    func deleteMission(offsets: IndexSet) {
+        for index in offsets {
+            modelContext.delete(activeMissions[index])
+        }
+    }
+    
+    // 테스트용 알림 즉시 보내기
     private func sendTestNotification() {
         let content = UNMutableNotificationContent()
         content.title = "테스트 알림"
@@ -75,19 +142,26 @@ struct MissionView: View {
         print("📢 테스트 알림 예약 완료 (5초 후 도착)")
     }
     
-    func addMission() {
-        let newMission = Mission(title: "즉흥적인 약속 잡기", detailText: "계획 없이 친구에게 연락해서 만나기", category: "P")
-        modelContext.insert(newMission)
-    }
+}
+
+class NotificationDelegate: NSObject, UNUserNotificationCenterDelegate {
+    var addMissionCallback: (() -> Void)?
     
-    func deleteMission(offsets: IndexSet) {
-        for index in offsets {
-            modelContext.delete(missions[index])
-        }
+    // 알림이 도착했을 때 호출되는 함수
+    func userNotificationCenter(
+        _ center: UNUserNotificationCenter,
+        willPresent notification: UNNotification,
+        withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void
+    ) {
+        // 알림이 도착하면 바로 미션 추가
+        addMissionCallback?()
+        
+        // 알림도 보여주기
+        completionHandler([.banner, .sound, .badge])
     }
-    
 }
 
 #Preview {
     MissionView()
 }
+

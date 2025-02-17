@@ -11,20 +11,27 @@ import SwiftData
 @main
 struct Fix_MBTIApp: App {
     @AppStorage("isFirstLaunch") private var isFirstLaunch: Bool = true // 첫 실행인지 여부
-
+    
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
             Mission.self,
+            MBTIProfile.self,
+            ActiveMission.self,
+            PostMission.self,
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
-
+        
         do {
             return try ModelContainer(for: schema, configurations: [modelConfiguration])
         } catch {
             fatalError("Could not create ModelContainer: \(error)")
         }
     }()
-
+    
+    init() {
+        NotificationManager.instance.requestPermission() // 앱 실행 시 알림 권한 요청
+    }
+    
     var body: some Scene {
         WindowGroup {
             if isFirstLaunch {
