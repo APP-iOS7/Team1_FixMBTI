@@ -16,7 +16,11 @@ struct MissionDetailView: View {
     @State private var selectedImage: UIImage? = nil
     @State private var isImagePickerPresented = false
     @State private var inputText: String = ""
-    @State private var useCamera: Bool = true
+    @State private var useCamera: Bool = false
+    @State private var showingAlert: Bool = false
+    
+    let alert =  UIAlertController(title: "Title", message: "message", preferredStyle: .actionSheet)
+
     
     private let mission: Mission  // let으로 변경
     
@@ -26,7 +30,7 @@ struct MissionDetailView: View {
     
     var body: some View {
         VStack {
-            Button(action: { isImagePickerPresented.toggle() }) {
+            Button(action: { showingAlert.toggle() }) {
                 if let image = selectedImage {
                     Image(uiImage: image)
                         .resizable()
@@ -47,8 +51,24 @@ struct MissionDetailView: View {
             }
             .padding()
             .offset(y: 15)
+            .confirmationDialog("이미지를 선택하세요", isPresented: $showingAlert, titleVisibility: .visible) {
+                Button("카메라 촬영") {
+                    useCamera = true
+                    DispatchQueue.main.async {
+                        isImagePickerPresented = true
+                    }
+                }
+                Button("앨범에서 선택") {
+                    useCamera = false
+                    DispatchQueue.main.async {
+                        isImagePickerPresented = true
+                    }
+                }
+                Button("취소", role: .cancel) {} // 취소 버튼 추가
+            }
+
             .sheet(isPresented: $isImagePickerPresented) {
-                ImagePicker(image: $selectedImage)
+                ImagePicker(image: $selectedImage, sourceType: useCamera ? .camera : .photoLibrary)
                 
             }
             HStack {
