@@ -25,8 +25,6 @@ struct MissionView: View {
             Picker("Category", selection: $category) {
                 ForEach(categories, id: \.self) {
                     Text($0)
-                        .font(.caption2)
-                        .fontWeight(.semibold)
                 }
             }
             .frame(width: 160, height: 30, alignment: .trailing)

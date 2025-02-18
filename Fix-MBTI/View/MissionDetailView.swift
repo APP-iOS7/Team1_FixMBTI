@@ -42,7 +42,7 @@ struct MissionDetailView: View {
                     VStack {
                         Image(systemName: "photo.on.rectangle.angled")
                             .font(.system(size: 50))
-                            .foregroundColor(Color(hex: "FA812F"))
+                            .foregroundColor(Color("ThemeColor"))
                     }
                     .frame(width: 335, height: 335)
                     .background(Color("ImagePickerBackgroundColor"))
