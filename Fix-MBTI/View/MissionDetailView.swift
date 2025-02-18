@@ -16,6 +16,7 @@ struct MissionDetailView: View {
     @State private var selectedImage: UIImage? = nil
     @State private var isImagePickerPresented = false
     @State private var inputText: String = ""
+    @State private var useCamera: Bool = true
     
     private let mission: Mission  // let으로 변경
     
@@ -30,6 +31,7 @@ struct MissionDetailView: View {
                     Image(uiImage: image)
                         .resizable()
                         .scaledToFit()
+                    
                         .frame(height: 335)
                         .clipShape(RoundedRectangle(cornerRadius: 10))
                 } else {
@@ -47,6 +49,7 @@ struct MissionDetailView: View {
             .offset(y: 15)
             .sheet(isPresented: $isImagePickerPresented) {
                 ImagePicker(image: $selectedImage)
+                
             }
             HStack {
                 Text(mission.title)

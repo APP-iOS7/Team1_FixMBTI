@@ -1,21 +1,15 @@
-//
-//  ImagePicker.swift
-//  Fix-MBTI
-//
-//  Created by 이수겸 on 2/6/25.
-//
-
 import SwiftUI
 import UIKit
 
-// 이미지 선택을 위한 UIKit 기반의 ImagePicker
 struct ImagePicker: UIViewControllerRepresentable {
     @Binding var image: UIImage?
+    var sourceType: UIImagePickerController.SourceType = .camera // 기본값: 앨범
     
     func makeUIViewController(context: Context) -> UIImagePickerController {
         let picker = UIImagePickerController()
         picker.delegate = context.coordinator
-        picker.sourceType = .photoLibrary // 카메라 사용하려면 .camera 변경
+        picker.sourceType = sourceType
+        picker.allowsEditing = true // 편집 기능 활성화
         return picker
     }
     
@@ -33,11 +27,12 @@ struct ImagePicker: UIViewControllerRepresentable {
         }
         
         func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
-            if let uiImage = info[.originalImage] as? UIImage {
-                parent.image = uiImage
+            if let editedImage = info[.editedImage] as? UIImage {
+                parent.image = editedImage
+            } else if let originalImage = info[.originalImage] as? UIImage {
+                parent.image = originalImage
             }
             picker.dismiss(animated: true)
         }
     }
 }
-
