@@ -45,7 +45,7 @@ struct MissionDetailView: View {
                             .foregroundColor(Color(hex: "FA812F"))
                     }
                     .frame(width: 335, height: 335)
-                    .background(Color(hex: "F0F0F0"))
+                    .background(Color("ImagePickerBackgroundColor"))
                     .clipShape(RoundedRectangle(cornerRadius: 10))
                 }
             }
@@ -81,7 +81,7 @@ struct MissionDetailView: View {
                 Spacer()
                 
                 Text(mission.category)
-                    .font(.title2)
+                    .font(.system(size: 20))
                     .fontWeight(.bold)
                     .foregroundStyle(Color(hex: "FA812F"))
                     .padding(.trailing)
@@ -94,14 +94,15 @@ struct MissionDetailView: View {
                     .font(.caption)
                     .lineLimit(1)
                     .padding(.leading)
+                    .offset(y: 1)
                 Spacer()
             }
             
             TextEditor(text: $inputText)
-                .font(.system(size: 18))
+                .font(.system(size: 17))
                 .overlay(alignment: .topLeading) {
                     Text("문구 입력..")
-                        .font(.system(size: 18))
+                        .font(.system(size: 17))
                         .foregroundStyle(inputText.isEmpty ? .gray : .clear)
                         .padding(.top, 8)
                         .padding(.horizontal, 5)
@@ -164,7 +165,6 @@ struct MissionDetailView: View {
         dismiss()
     }
 }
-
 
 
 #Preview {

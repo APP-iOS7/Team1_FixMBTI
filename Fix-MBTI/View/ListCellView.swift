@@ -58,9 +58,9 @@ struct ListCellView: View {
                             .fontWeight(.bold)
                             .foregroundStyle(Color(hex: "FA812F"))
                         Spacer()
-                        Text("\(post.timestamp.formatted(date: .numeric, time: .omitted))")
-                            .font(.caption2)
-                            .foregroundColor(.gray)
+//                        Text("\(post.timestamp.formatted(date: .numeric, time: .omitted))")
+//                            .font(.caption2)
+//                            .foregroundColor(.gray)
                     }
                 }
                 Spacer()

@@ -43,7 +43,7 @@ struct MissionView: View {
                 categoryPicker
                     .offset(y: 4)
                 if filteredMissions.isEmpty {
-                    ContentUnavailableView("미션 없음", systemImage: "doc.text")
+                    ContentUnavailableView("미션 없음", systemImage: "paperplane")
                 } else {
                     List {
                         ForEach(filteredMissions) { activeMission in

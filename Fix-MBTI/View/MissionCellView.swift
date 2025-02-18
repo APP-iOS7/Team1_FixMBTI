@@ -30,9 +30,10 @@ struct MissionCellView: View {
                         //    .foregroundStyle(Color(hex: "222222"))  // "체험"은 기존 색상 유지
                     }
                     Spacer()
-                    Text("\(mission.timestamp.formatted(date: .numeric, time: .omitted))")
-                        .font(.caption2)
-                        .foregroundColor(.gray)
+
+//                    Text(mission.timestamp, format: Date.FormatStyle().month(.defaultDigits).day(.defaultDigits))
+//                        .font(.caption2)
+//                        .foregroundColor(.gray)
                     //  .foregroundStyle(Color(hex: "222222"))
                     
                 }
