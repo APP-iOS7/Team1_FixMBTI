@@ -90,7 +90,7 @@ struct MissionView: View {
                 }
             }
         }
-        .accentColor(Color(hex: "FA812F"))
+        .accentColor(Color("ThemeColor"))
     }
     
     private func addMission() {

@@ -70,7 +70,7 @@ struct ListView: View {
             }
             
         }
-        .accentColor(Color(hex: "FA812F"))
+        .accentColor(Color("ThemeColor"))
     }
     
     // 게시물 삭제 함수

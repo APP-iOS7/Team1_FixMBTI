@@ -83,7 +83,7 @@ struct MissionDetailView: View {
                 Text(mission.category)
                     .font(.system(size: 20))
                     .fontWeight(.bold)
-                    .foregroundStyle(Color(hex: "FA812F"))
+                    .foregroundStyle(Color("ThemeColor"))
                     .padding(.trailing)
                 
             }
@@ -119,7 +119,7 @@ struct MissionDetailView: View {
                 .padding()
                 .frame(maxWidth: .infinity)
                 .disabled(inputText.isEmpty || ((mission.imageName?.isEmpty) != nil))
-                .background(inputText.isEmpty || ((mission.imageName?.isEmpty) != nil) ? Color.gray : Color(hex: "FA812F"))
+                .background(inputText.isEmpty || ((mission.imageName?.isEmpty) != nil) ? Color.gray : Color("ThemeColor"))
                 .foregroundColor(.white)
                 .cornerRadius(10)
                 .padding()

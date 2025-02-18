@@ -56,7 +56,7 @@ struct ListCellView: View {
                         Text("\(post.category)")
                             .font(.headline)
                             .fontWeight(.bold)
-                            .foregroundStyle(Color(hex: "FA812F"))
+                            .foregroundStyle(Color("ThemeColor"))
                         Spacer()
 //                        Text("\(post.timestamp.formatted(date: .numeric, time: .omitted))")
 //                            .font(.caption2)

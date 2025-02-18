@@ -23,7 +23,7 @@ struct MissionCellView: View {
                         Text(mission.category)
                             .font(.footnote)
                             .fontWeight(.bold)
-                            .foregroundStyle(Color(hex: "FA812F"))  // category만 오렌지색으로
+                            .foregroundStyle(Color("ThemeColor"))  // category만 오렌지색으로
                         Text("미션")
                             .font(.footnote)
                             .fontWeight(.bold)

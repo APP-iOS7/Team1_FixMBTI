@@ -24,7 +24,7 @@ struct SettingView: View {
         NavigationStack {
             List {
                 
-                Section(header: Text("내 MBTI").font(.caption).foregroundColor(Color(hex: "444444"))) {
+                Section(header: Text("내 MBTI").font(.caption).foregroundColor(Color("SettingTextColor"))) {
                     HStack {
                         Text(profiles.first?.currentMBTI ?? "미설정")
                             .font(.headline)
@@ -32,7 +32,7 @@ struct SettingView: View {
                     }
                 }
                 
-                Section(header: Text("체험 MBTI").font(.caption).foregroundColor(Color(hex: "444444"))) {
+                Section(header: Text("체험 MBTI").font(.caption).foregroundColor(Color("SettingTextColor"))) {
                     HStack {
                         Text(profiles.first?.targetMBTI ?? "미설정")
                             .font(.headline)
@@ -45,7 +45,7 @@ struct SettingView: View {
                     Button(action: { isShowingMBTISelection = true }) {
                         HStack {
                             Image(systemName: "pencil")
-                                .foregroundColor(Color(hex: "FA812F"))
+                                .foregroundColor(Color("ThemeColor"))
                             Text("MBTI 변경")
                                 .foregroundColor(.primary)
                             Spacer()
@@ -57,7 +57,7 @@ struct SettingView: View {
                     Button(action: { openMBTITest() }) {
                         HStack {
                             Image(systemName: "globe")
-                                .foregroundColor(Color(hex: "FA812F"))
+                                .foregroundColor(Color("ThemeColor"))
                             Text("MBTI 검사하러 가기")
                                 .foregroundColor(.primary)
                             Spacer()
@@ -72,7 +72,7 @@ struct SettingView: View {
                     Toggle(isOn: $isNotificationEnabled) {
                         HStack {
                             Image(systemName: "bell.fill")
-                                .foregroundColor(Color(hex: "FA812F"))
+                                .foregroundColor(Color("ThemeColor"))
                             Text("알림 설정")
                         }
                     }
@@ -90,7 +90,7 @@ struct SettingView: View {
                 }
                 
                 // 🔹 미션 개수 설정
-                Section(header: Text("미션 개수 설정").font(.caption).foregroundColor(Color(hex: "444444"))) {
+                Section(header: Text("미션 개수 설정").font(.caption).foregroundColor(Color("SettingTextColor"))) {
                     Picker("미션 개수", selection: $missionCount) {
                         ForEach(1...5, id: \.self) { count in
                             Text("\(count)개").tag(count)
