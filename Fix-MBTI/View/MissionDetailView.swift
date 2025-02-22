@@ -18,6 +18,7 @@ struct MissionDetailView: View {
     @State private var inputText: String = ""
     @State private var useCamera: Bool = false
     @State private var showingAlert: Bool = false
+    @FocusState private var isFocused: Bool
     
     let alert =  UIAlertController(title: "Title", message: "message", preferredStyle: .actionSheet)
 
@@ -107,6 +108,7 @@ struct MissionDetailView: View {
                         .padding(.top, 8)
                         .padding(.horizontal, 5)
                 }
+                .focused($isFocused)
                 .frame(height: 200)
                 .background(Color(.systemGray6))
                 .clipShape(RoundedRectangle(cornerRadius: 10))
@@ -127,6 +129,9 @@ struct MissionDetailView: View {
                 .onTapGesture {
                     savePost()
                 }
+        }
+        .onTapGesture {
+            isFocused = false
         }
         .padding()
         .navigationTitle("게시물 작성")
