@@ -24,7 +24,7 @@ struct MBTISelectionView: View {
         ["P", "J"]  // 인식형 vs 판단형
     ]
     
-    var isCompleteButtonDisabled: Bool {
+    private var isCompleteButtonDisabled: Bool {
         currentMBTI == targetMBTI
     }
     
@@ -38,7 +38,7 @@ struct MBTISelectionView: View {
                 Image(systemName: "arrowshape.down.fill")
                     .resizable()
                     .frame(width: 28, height: 30)
-                    .foregroundColor(Color(hex: "FA812F"))
+                    .foregroundColor(Color("ThemeColor"))
                 
                 
                 
@@ -50,7 +50,8 @@ struct MBTISelectionView: View {
                     dismiss()
                 }
                 .padding()
-                .foregroundStyle(isCompleteButtonDisabled ? .gray : Color(hex: "FA812F"))
+                .fontWeight(.semibold)
+                .foregroundStyle(isCompleteButtonDisabled ? .gray : Color("ThemeColor"))
                 .disabled(isCompleteButtonDisabled)
                 .opacity(isCompleteButtonDisabled ? 0.5 : 1.0)
             }
@@ -105,7 +106,7 @@ struct MBTIPicker: View {
                             .font(.system(size: 32))
                             .fontWeight(.medium)
                             .frame(maxWidth: .infinity)
-                            .foregroundStyle(selection[index] == option ? Color(hex: "FA812F") : .gray)
+                            .foregroundStyle(selection[index] == option ? Color("ThemeColor") : .gray)
                     }
                 }
                 .pickerStyle(.wheel)

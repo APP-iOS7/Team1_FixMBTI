@@ -21,11 +21,14 @@ struct MissionDetailView: View {
     @FocusState private var isFocused: Bool
     
     let alert =  UIAlertController(title: "Title", message: "message", preferredStyle: .actionSheet)
-
+    
     
     private let mission: Mission  // let으로 변경
+    private var isCompleteButtonDisabled: Bool {
+        return inputText.isEmpty || selectedImage == nil
+    }
     
-    init(mission: Mission) {  // 명시적 생성자 추가
+    init(mission: Mission) {  // 명시적 생성자
         self.mission = mission
     }
     
@@ -67,7 +70,7 @@ struct MissionDetailView: View {
                 }
                 Button("취소", role: .cancel) {} // 취소 버튼 추가
             }
-
+            
             .sheet(isPresented: $isImagePickerPresented) {
                 ImagePicker(image: $selectedImage, sourceType: useCamera ? .camera : .photoLibrary)
                 
@@ -117,19 +120,18 @@ struct MissionDetailView: View {
             
             Spacer()
             
-            Text("완료")
-                .padding()
-                .frame(maxWidth: .infinity)
-                .disabled(inputText.isEmpty || ((mission.imageName?.isEmpty) != nil))
-                .background(inputText.isEmpty || ((mission.imageName?.isEmpty) != nil) ? Color.gray : Color("ThemeColor"))
-                .foregroundColor(.white)
-                .cornerRadius(10)
-                .padding()
-                .offset(y: -20)
-                .onTapGesture {
-                    savePost()
-                    
-                }
+            Button("완료") {
+                savePost()
+            }
+            .padding()
+            .frame(maxWidth: .infinity)
+            .background(isCompleteButtonDisabled ? Color.gray : Color("ThemeColor"))
+            .disabled(isCompleteButtonDisabled)
+            .foregroundColor(.white)
+            .cornerRadius(10)
+            .padding()
+            .offset(y: -20)
+            
         }
         .onTapGesture {
             isFocused = false
