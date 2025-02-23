@@ -128,6 +128,7 @@ struct MissionDetailView: View {
                 .offset(y: -20)
                 .onTapGesture {
                     savePost()
+                    
                 }
         }
         .onTapGesture {

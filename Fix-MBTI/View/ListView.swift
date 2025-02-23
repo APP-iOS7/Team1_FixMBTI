@@ -34,8 +34,6 @@ struct ListView: View {
     
     var body: some View {
         NavigationStack(path: $stackPath) {
-            
-            
             VStack {
                 categoryPicker
                     .offset(y: 4)
@@ -47,7 +45,7 @@ struct ListView: View {
                         ForEach(filteredPosts) { post in
                             NavigationLink(destination: ListDetailView(post: post)) {
                                 ListCellView(post: post)
-                                    .padding(.init(top: 0, leading: -5.5, bottom: -11, trailing: 0))
+                                    .padding(.init(top: -6, leading: -6, bottom: -6, trailing: 0))
                             }
                         }
                         .onDelete { index in

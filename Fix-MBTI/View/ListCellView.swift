@@ -22,7 +22,6 @@ struct ListCellView: View {
     }
     
     var body: some View {
-        ScrollView {
             HStack(spacing: 10) {
                 // 이미지 표시 로직 변경
                 if let imageName = post.imageName,
@@ -68,7 +67,7 @@ struct ListCellView: View {
             .frame(height: 90)
             .padding(.vertical, 5)
         }
-    }
+    
 }
 
 #Preview {
